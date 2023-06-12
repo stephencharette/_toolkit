@@ -6,7 +6,7 @@ function AddTextSelectPairs({fieldPairs, handleOptionPairTextChange, handleOptio
   return (
     <div className="flex flex-col space-y-2">
       <label htmlFor="controller-actions">Add fields</label>
-      <fieldset class="ml-2 space-y-2">
+      <fieldset className="ml-2 space-y-2">
         {fieldPairs.map((pair, index) => (
           <TextSelectPair textValue={pair.field} selectValue={pair.fieldType} index={index} key={index} handleOptionPairTextChange={handleOptionPairTextChange} handleOptionPairSelectChange={handleOptionPairSelectChange} options={Constants.DATA_TYPE_OPTIONS} />
         ))}

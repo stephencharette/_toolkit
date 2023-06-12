@@ -5,7 +5,7 @@ function AddTextFields({handleChange, handleAdd, fields, label, placeholder}) {
   return (
     <div className="flex flex-col space-y-2">
       <label htmlFor="controller-actions">{label}</label>
-      <fieldset class="ml-2 space-y-2">
+      <fieldset className="ml-2 space-y-2">
         {fields.map((field, index) => (
           <TextField placeholder={placeholder} textValue={field} index={index} key={index} handleChange={handleChange} />
         ))}

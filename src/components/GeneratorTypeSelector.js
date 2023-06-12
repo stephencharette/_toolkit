@@ -1,5 +1,6 @@
 import React from 'react'
 import PrettyRadio from './form/PrettyRadio'
+import PrettyRadioLink from './form/PrettyRadioLink'
 
 function GeneratorTypeSelector({ handleSelect, generator }) {
   return (
@@ -13,7 +14,11 @@ function GeneratorTypeSelector({ handleSelect, generator }) {
         <PrettyRadio handleSelect={() => handleSelect('mailer')} name='generator' value='mailer' label='Mailer'/>
         <PrettyRadio handleSelect={() => handleSelect('helper')} name='generator' value='helper' label='Helper'/>
         <PrettyRadio handleSelect={() => handleSelect('job')} name='generator' value='job' label='Job'/>
-        <PrettyRadio handleSelect={() => handleSelect('task')} name='generator' value='task' label='Task'/>  
+        <PrettyRadio handleSelect={() => handleSelect('task')} name='generator' value='task' label='Task'/>
+        <PrettyRadio handleSelect={() => handleSelect('form_select')} name='generator' value='form_select' label='Form Select'/>
+        <PrettyRadio handleSelect={() => handleSelect('internationalization')} name='generator' value='internationalization' label='Internationalization'/>
+
+        <PrettyRadioLink link={"https://strftimer.com/"} label='strftime'/>
       </ul>
     </div>
   )

@@ -32,6 +32,10 @@ input[type="text"] {
   @apply block w-full py-1 px-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 font-mono sm:text-xs text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500
 }
 
+a {
+  @apply font-medium text-sm
+}
+
 label {
   @apply ml-2 text-sm font-medium text-gray-900 dark:text-gray-300
 }
@@ -56,7 +60,7 @@ body {
   @apply w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white
 }
 
-label.pretty-radio {
+.pretty-radio {
   @apply inline-flex items-center justify-between p-2 text-gray-500 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700
 }
 
