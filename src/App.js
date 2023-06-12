@@ -11,6 +11,7 @@ function App() {
   const [generator, setGenerator] = useState('...')
   // TODO: make NAME a constant in defaults or something...
   const [name, setName] = useState('NAME')
+  const [actions, setActions] = useState([''])
   const [options, setOptions] = useState([])
   const [fieldPairs, setFieldPairs] = useState([{ field: '', fieldType: '' }])
 
@@ -18,6 +19,7 @@ function App() {
     setGenerator(type)
     setOptions([])
     setName('NAME')
+    setActions([''])
   }
 
   const handleOptionPairTextChange = (event, index) => {
@@ -48,7 +50,37 @@ function App() {
     setFieldPairs((previousOptions) => [...previousOptions, { field: '', fieldType: '' }])
   }
 
+  const handleAddAction = () => {
+    setActions((previousActions) => [...previousActions, ''])
+  }
+
+  const handleActionChange = (event, index) => {
+    const inputType = event.target.type
+    if(inputType === 'checkbox') {
+      const { name, checked } = event.target
+      if(checked) {
+        setActions([...actions, name])
+      } else {
+        const updatedActions = actions.filter(item => item !== name)
+        setActions(updatedActions)
+      }
+    } else if(inputType === 'text') {
+      const value = event.target.value
+      setActions((previousActions) => {
+        if(value === '') return previousActions
+        
+        const updatedActions = [...previousActions]
+        updatedActions[index] = value
+  
+        return updatedActions
+      })  
+    }
+  }
+
   const handleNameChange = event => {
+    const updatedName = event.target.value
+    if(updatedName === '') return setName('NAME')
+
     setName(event.target.value)
   }
 
@@ -103,10 +135,14 @@ function App() {
                             handleOptionPairTextChange={handleOptionPairTextChange}
                             handleAddOptionPair={handleAddOptionPair}
                             fieldPairs={fieldPairs}
+                            handleAddAction={handleAddAction}
+                            handleActionChange={handleActionChange}
+                            actions={actions}
                             />
         </div>
 
-        <Result command={`rails generate ${generator} ${name} ${fieldPairs.filter(pair => pair.field !== '').map((pair) => `${pair.field}:${pair.fieldType}`).join(' ')} ${options.join(' ')}`}/>
+        
+        <Result command={['rails generate', `${generator}`, `${name}`, `${actions.join(' ')}`, `${fieldPairs.filter(pair => pair.field !== '').map((pair) => `${pair.field}:${pair.fieldType}`).join(' ')}`, `${options.join(' ')}`].join(' ')}/>
       </div>
 
 

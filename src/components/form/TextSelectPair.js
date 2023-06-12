@@ -1,6 +1,6 @@
 import React from 'react'
 
-function SelectOption({handleOptionPairTextChange, handleOptionPairSelectChange, name, options, id, index, textValue, selectValue}) {
+function TextSelectPair({handleOptionPairTextChange, handleOptionPairSelectChange, name, options, id, index, textValue, selectValue}) {
   return (
     <div className="flex items-center space-x-2">
       <input type="text" name={`${name}-${index}`} required={true} value={textValue} placeholder='Field name' onChange={(event) => handleOptionPairTextChange(event, index)}></input>
@@ -11,4 +11,4 @@ function SelectOption({handleOptionPairTextChange, handleOptionPairSelectChange,
   )
 }
 
-export default SelectOption
+export default TextSelectPair

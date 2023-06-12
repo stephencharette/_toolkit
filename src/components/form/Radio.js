@@ -1,10 +1,10 @@
 import React from 'react'
 
-function Radio({ type, label, handleSelect }) {
+function Radio({ name, label, handleSelect }) {
   return (
     <div className="flex items-center">
-      <input id={`${type}-radio`} type="radio" value="" text="adsfasd" name="generate-type-radio" onChange={handleSelect}></input>
-      <label htmlFor={`${type}-radio`}>{label}</label>
+      <input id={`${name}-radio`} type="radio" value="" name={name} className="hidden" onChange={handleSelect}></input>
+      <label htmlFor={`${name}-radio`} className="pretty-radio">{label}</label>
     </div>
   )
 }

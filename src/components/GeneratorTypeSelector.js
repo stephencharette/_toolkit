@@ -1,20 +1,20 @@
 import React from 'react'
-import Radio from './form/Radio'
+import PrettyRadio from './form/PrettyRadio'
 
 function GeneratorTypeSelector({ handleSelect, generator }) {
   return (
     <div className="flex flex-col text-left space-y-3">
       <h2>What to generate:</h2>
-      <div className="flex flex-wrap gap-x-5 gap-y-3">
-        <Radio handleSelect={() => handleSelect('scaffold')} type='scaffold' label='Scaffold'/>
-        <Radio handleSelect={() => handleSelect('controller')} type='controller' label='Controller' />
-        <Radio handleSelect={() => handleSelect('model')} type='model' label='Model'/>
-        <Radio handleSelect={() => handleSelect('migration')} type='migration' label='Migration'/>
-        <Radio handleSelect={() => handleSelect('mailer')} type='mailer' label='Mailer'/>
-        <Radio handleSelect={() => handleSelect('helper')} type='helper' label='Helper'/>
-        <Radio handleSelect={() => handleSelect('job')} type='job' label='Job'/>
-        <Radio handleSelect={() => handleSelect('task')} type='task' label='Task'/>
-      </div>
+      <ul className="flex flex-wrap gap-x-1 gap-y-2">
+        <PrettyRadio handleSelect={() => handleSelect('scaffold')} name='generator' value='scaffold' label='Scaffold'/>
+        <PrettyRadio handleSelect={() => handleSelect('controller')} name='generator' value='controller' label='Controller' />
+        <PrettyRadio handleSelect={() => handleSelect('model')} name='generator' value='model' label='Model'/>
+        <PrettyRadio handleSelect={() => handleSelect('migration')} name='generator' value='migration' label='Migration'/>
+        <PrettyRadio handleSelect={() => handleSelect('mailer')} name='generator' value='mailer' label='Mailer'/>
+        <PrettyRadio handleSelect={() => handleSelect('helper')} name='generator' value='helper' label='Helper'/>
+        <PrettyRadio handleSelect={() => handleSelect('job')} name='generator' value='job' label='Job'/>
+        <PrettyRadio handleSelect={() => handleSelect('task')} name='generator' value='task' label='Task'/>  
+      </ul>
     </div>
   )
 }

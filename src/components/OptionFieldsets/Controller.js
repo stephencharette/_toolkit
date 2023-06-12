@@ -1,39 +1,37 @@
 import React from 'react'
 import Toggle from '../form/Toggle';
+import TextFieldWithLabel from '../form/TextFieldWithLabel';
+import AddTextFields from './shared/AddTextFields';
+import Checkbox from '../form/Checkbox'
 
-function Controller({handleNameChange, handleOptionsChange}) {
+function Controller({handleNameChange, handleOptionsChange, handleActionChange, handleAddAction, actions}) {
   return (
     <fieldset className="flex flex-col text-left space-y-3 mt-2">
       <h3>Controller options:</h3>
-      <div className="flex items-center space-x-2">
-        <label htmlFor="controller-name" className="text-left">Name</label>
-        <input type="text" id="controller-name" pattern="[a-z]*" placeholder="[name]_controller.rb" onChange={handleNameChange}></input>
+      <TextFieldWithLabel name='controller-name' placeholder='[name]_controller.rb' label="Name" handleChange={handleNameChange}/>
+
+      <div className="flex flex-col space-y-2">
+        <h3>Controller actions</h3>
+        <fieldset className="ml-2 space-y-2">
+          <Checkbox name={'index'} label={'Index'} handleChange={handleActionChange} />
+          <Checkbox name={'show'} label={'Show'} handleChange={handleActionChange} />
+          <Checkbox name={'edit'} label={'Edit'} handleChange={handleActionChange} />
+          <Checkbox name={'create'} label={'Create'} handleChange={handleActionChange} />
+          <Checkbox name={'update'} label={'Update'} handleChange={handleActionChange} />
+          <Checkbox name={'destroy'} label={'Destroy'} handleChange={handleActionChange} />
+        </fieldset>
+        
+        <AddTextFields placeholder='custom action name' handleChange={handleActionChange} handleAdd={handleAddAction} fields={actions} />
       </div>
 
       <div className="flex flex-col space-y-2">
-        <label htmlFor="controller-actions">Controller actions</label>
-        <Toggle name={'index'} label={'Index'} handleChange={handleOptionsChange} />
-        <Toggle name={'show'} label={'Show'} handleChange={handleOptionsChange} />
-        <Toggle name={'edit'} label={'Edit'} handleChange={handleOptionsChange} />
-        <Toggle name={'create'} label={'Create'} handleChange={handleOptionsChange} />
-        <Toggle name={'update'} label={'Update'} handleChange={handleOptionsChange} />
-        <Toggle name={'destroy'} label={'Destroy'} handleChange={handleOptionsChange} />
-      </div>
-
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="controller-actions">Options</label>
+        <h3>Options</h3>
         <Toggle name={'--skip-namespace'} label={'Skip Namespace'} handleChange={handleOptionsChange} />
         <Toggle name={'--skip-routes'} label={'Skip Routes'} handleChange={handleOptionsChange} />
-        <Toggle name={'--helper'} checked={true} label={'Add Helper File'} handleChange={handleOptionsChange} />
+        <Toggle name={'--no-helper'} checked={true} label={'Skip Helper File'} handleChange={handleOptionsChange} />
       </div>
 
-      <div className="flex flex-col space-y-2">
-        <label htmlFor="controller-actions">Runtime options</label>
-        <Toggle name={'--force'} label={'Overwrite files that already exists'} handleChange={handleOptionsChange} />
-        <Toggle name={'--pretend'} label={'Run but do not make any changes'} handleChange={handleOptionsChange} />
-        <Toggle name={'--quiet'} label={'Suppress status output'} handleChange={handleOptionsChange} />
-        <Toggle name={'--skip'} label={'Skip files that already exist'} handleChange={handleOptionsChange} />
-      </div>
+      
     </fieldset>
   )
 }

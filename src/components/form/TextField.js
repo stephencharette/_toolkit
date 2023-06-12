@@ -1,10 +1,9 @@
 import React from 'react'
 
-function TextField({name, placeholder, label, id, handleOptionsChange}) {
+function TextField({handleChange, name, index, textValue, placeholder}) {
   return (
     <div className="flex items-center space-x-2">
-      <label htmlFor={name} className="text-left w-2/3">{label}</label>
-      <input type="text" id={id} name={name} placeholder={placeholder} onChange={handleOptionsChange}></input>
+      <input type="text" name={`${name}-${index}`} required={true} value={textValue} placeholder={placeholder} onChange={(event) => handleChange(event, index)}></input>
     </div>
   )
 }
