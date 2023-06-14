@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Switcher from "./Switcher";
 
 function Sidebar() {
   return (
+    // TODO: add logo or something here...
     <aside id="separator-sidebar" aria-label="Sidenav">
-      <div className="sidebar-container">
+      <div className="sidebar-container flex flex-col justify-between">
         <ul className="space-y-2">
           <li>
             <Link to={"/rails"} className="sidebar-link group">
@@ -12,6 +14,9 @@ function Sidebar() {
             </Link>
           </li>
         </ul>
+        <div class="">
+          <Switcher />
+        </div>
       </div>
     </aside>
   );

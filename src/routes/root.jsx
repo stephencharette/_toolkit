@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import Switcher from "../components/Switcher";
 
 export default function Root() {
   return (
