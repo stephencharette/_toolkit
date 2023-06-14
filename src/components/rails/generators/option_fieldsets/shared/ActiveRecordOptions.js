@@ -1,6 +1,6 @@
 import React from 'react'
-import Toggle from '../../form/Toggle'
-import TextFieldWithLabel from '../../form/TextFieldWithLabel'
+import Toggle from '../../../../form/Toggle'
+import TextFieldWithLabel from '../../../../form/TextFieldWithLabel'
 
 function ActiveRecordOptions({handleOptionsChange}) {
   return (

@@ -1,8 +1,8 @@
 import React from 'react'
-import Toggle from '../form/Toggle';
-import TextFieldWithLabel from '../form/TextFieldWithLabel';
+import Toggle from '../../../form/Toggle';
+import TextFieldWithLabel from '../../../form/TextFieldWithLabel';
 import AddTextFields from './shared/AddTextFields';
-import Checkbox from '../form/Checkbox'
+import Checkbox from '../../../form/Checkbox'
 
 function Controller({handleNameChange, handleOptionsChange, handleActionChange, handleAddAction, actions}) {
   return (

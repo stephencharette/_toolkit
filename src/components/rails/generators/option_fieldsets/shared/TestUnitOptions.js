@@ -1,6 +1,6 @@
 import React from 'react'
-import TextFieldWithLabel from '../../form/TextFieldWithLabel'
-import Toggle from '../../form/Toggle'
+import TextFieldWithLabel from '../../../../form/TextFieldWithLabel'
+import Toggle from '../../../../form/Toggle'
 
 function TestUnitOptions({handleOptionsChange}) {
   return (

@@ -1,12 +1,12 @@
 import React from 'react'
-import Controller from './OptionFieldsets/Controller'
-import Scaffold from './OptionFieldsets/Scaffold'
-import Model from './OptionFieldsets/Model'
-import Migration from './OptionFieldsets/Migration'
-import Mailer from './OptionFieldsets/Mailer'
-import Helper from './OptionFieldsets/Helper'
-import Job from './OptionFieldsets/Job'
-import Task from './OptionFieldsets/Task'
+import Controller from './option_fieldsets/Controller'
+import Scaffold from './option_fieldsets/Scaffold'
+import Model from './option_fieldsets/Model'
+import Migration from './option_fieldsets/Migration'
+import Mailer from './option_fieldsets/Mailer'
+import Helper from './option_fieldsets/Helper'
+import Job from './option_fieldsets/Job'
+import Task from './option_fieldsets/Task'
 
 function GeneratorOptions({generator, handleOptionPairSelectChange, handleOptionPairTextChange, handleAddOptionPair, handleNameChange, handleOptionsChange, fieldPairs, handleActionChange, handleAddAction, actions}) {
   switch(generator) {

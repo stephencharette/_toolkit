@@ -1,6 +1,6 @@
 import React from 'react'
-import TextSelectPair from '../../form/TextSelectPair'
-import * as Constants from '../../../constants/rails/index.js';
+import TextSelectPair from '../../../../form/TextSelectPair'
+import * as Constants from '../../../../../constants/rails/index.js';
 
 function AddTextSelectPairs({fieldPairs, handleOptionPairTextChange, handleOptionPairSelectChange, handleAddOptionPair}) {
   return (
