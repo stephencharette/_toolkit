@@ -4,6 +4,7 @@ import GeneratorTypeSelector from "./GeneratorTypeSelector";
 import Result from "./Result";
 import GeneratorOptions from "./GeneratorOptions";
 import * as Constants from "../../../constants/rails/index.js";
+import Code from "../../Code";
 
 function Generators() {
   const defaults = Constants.DEFAULTS["state"];
@@ -137,6 +138,8 @@ function Generators() {
           actions={actions}
         />
       </div>
+
+      <Code />
 
       <Result
         command={[

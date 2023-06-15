@@ -6,12 +6,19 @@ import RailsGenerators from "./components/rails/generators/Generators";
 import reportWebVitals from "./reportWebVitals";
 import Root from "./routes/root";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Auth } from "./Auth";
+// import { useContext } from "react";
+import { UserProvider } from "./UserContext";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Root />,
     children: [
+      {
+        path: "login",
+        element: <Auth />,
+      },
       {
         path: "rails",
         element: <Rails />,
@@ -28,7 +35,9 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </React.StrictMode>
 );
 

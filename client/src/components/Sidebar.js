@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Switcher from "./Switcher";
+import { UserContext } from "../UserContext";
+import { Auth } from "../Auth";
 
 function Sidebar() {
+  const { userId } = useContext(UserContext);
+
   return (
     // TODO: add logo or something here...
     // TODO: add PostgreSQL (pg_restore, pg_dump, ...)
@@ -10,8 +14,11 @@ function Sidebar() {
       <div className="sidebar-container flex flex-col justify-between">
         <ul className="space-y-2">
           <li>
+            <Auth />
+          </li>
+          <li>
             <Link to={"/rails"} className="sidebar-link group">
-              <span className="ml-3">Ruby On Rails</span>
+              <span className="ml-3">Ruby on Rails</span>
             </Link>
           </li>
         </ul>
