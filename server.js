@@ -17,47 +17,53 @@ app.use(bodyParser.json());
 
 let test;
 
-let serviceAccount = require("./firebase.json");
+let serviceAccount = require("/etc/secrets/firebase.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
 });
 
-// const googleProvider = new GoogleAuthProvider();
-// const signInWithGoogle = async () => {
+// const verifyTokenMiddleware = async (req, res, next) => {
+//   console.log(req.headers.authorization);
+//   const token = req.headers.authorization;
+//   console.log("asdfsdaf");
+
+//   if (!token || !token.startsWith("Bearer ")) {
+//     return res.status(401).json({ error: "Unauthorized" });
+//   }
+
+//   const idToken = token.split("Bearer ")[1];
+
 //   try {
-//     const res = await signInWithPopup(auth, googleProvider);
-//     const user = res.user;
-//     const q = query(collection(db, "users"), where("uid", "==", user.uid));
-//     const docs = await getDocs(q);
-//     if (docs.docs.length === 0) {
-//       await addDoc(collection(db, "users"), {
-//         uid: user.uid,
-//         name: user.displayName,
-//         authProvider: "google",
-//         email: user.email,
-//       });
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     alert(err.message);
+//     // Verify the ID token and extract the user ID
+//     const decodedToken = await firebase.auth().verifyIdToken(idToken);
+//     req.userId = decodedToken.uid;
+
+//     next(); // Proceed to the next middleware or route handler
+//   } catch (error) {
+//     return res.status(401).json({ error: "Unauthorized" });
 //   }
 // };
+
+// app.post("/api/login", verifyTokenMiddleware, (req, res) => {
+//   console.log("sadfdfsadsf");
+// });
 
 const db = admin.firestore();
 
 // Get a list of cities from your database
-async function getCities() {
-  let docSnapshot = await db.collection("test").doc("SF").get();
+async function getCodeSnippets(userId) {
+  let docSnapshot = await db.collection("code-snippets").doc("SF").get();
   return docSnapshot.data();
 }
 
 async function initialize() {
-  test = await getCities();
+  // return await getCodeSnippets();
 }
 
 initialize();
 
 app.get("/express_backend", (req, res) => res.send(test.name));
+app.get("/");
 
 module.exports = app;
