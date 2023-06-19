@@ -1,5 +1,6 @@
 {
   "name": "rails-command-line",
+  "proxy": "http://localhost:3001",
   "version": "1.0.0",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
@@ -59,6 +60,7 @@
     "autoprefixer": "^10.4.14",
     "available-typed-arrays": "^1.0.5",
     "axe-core": "^4.7.2",
+    "axios": "^1.4.0",
     "axobject-query": "^3.1.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^27.5.1",
