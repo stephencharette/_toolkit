@@ -3,17 +3,22 @@ import CodeEditor from "@uiw/react-textarea-code-editor";
 import * as Constants from "../constants/code.js";
 import axios from "axios";
 import { UserContext } from "../UserContext.js";
+import SearchDropdown from "./form/SearchDropdown.js";
 
 function Code({ codeSnippetId, codeSnippet }) {
+  const allLanguageOptions = Constants.LANGUAGE_OPTIONS;
+
   const { userId, authToken } = useContext(UserContext);
   const [code, setCode] = useState(codeSnippet.code.replace(/\\n/g, "\n"));
   const [language, setLanguage] = useState(codeSnippet.lang);
-
-  const languageOptions = Constants.LANGUAGE_OPTIONS;
+  // const [dropdownIsHidden, setDropdownIsHidden] = useState(true);
+  const [languageOptions, setLanguageOptions] = useState(allLanguageOptions);
 
   const handleLanguageChange = async (event) => {
     const value = event.target.value;
+    const label = event.target.name;
     setLanguage(value);
+    // setDropdownIsHidden(true);
     const serverUrl = "http://localhost:3001";
     const result = await axios({
       method: "patch",
@@ -24,6 +29,22 @@ function Code({ codeSnippetId, codeSnippet }) {
       },
     });
   };
+
+  // const handleDropdownClick = () => {
+  //   setDropdownIsHidden(!dropdownIsHidden);
+  // };
+
+  // const handleDropdownSearch = (event) => {
+  //   const search = event.target.value;
+  //   if (search) {
+  //     const filteredOptions = languageOptions.filter((item) =>
+  //       item.label.toLowerCase().includes(search.toLowerCase())
+  //     );
+  //     setLanguageOptions(filteredOptions);
+  //   } else {
+  //     setLanguageOptions(allLanguageOptions);
+  //   }
+  // };
 
   const handleCodeChange = async (event) => {
     const value = event.target.value;
@@ -54,6 +75,16 @@ function Code({ codeSnippetId, codeSnippet }) {
           </option>
         ))}
       </select>
+
+      {/* <SearchDropdown
+        selected={language}
+        options={}
+        handleClick={handleDropdownClick}
+        handleSearch={handleDropdownSearch}
+        handleChange={handleLanguageChange}
+        isHidden={dropdownIsHidden}
+        setIsHidden={setDropdownIsHidden}
+      /> */}
 
       <CodeEditor
         value={code}

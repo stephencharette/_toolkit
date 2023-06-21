@@ -3,6 +3,7 @@ import OpenSidebarButton from "./OpenSidebarButton";
 import Code from "./Code";
 import { UserContext } from "../UserContext";
 import axios from "axios";
+import SearchDropdown from "./form/SearchDropdown";
 
 function Library() {
   const { userId, authToken } = useContext(UserContext);
@@ -47,8 +48,9 @@ function Library() {
         <p>loading...</p>
       ) : (
         <div>
+          <SearchDropdown />
           {Object.entries(codeSnippets).map(([id, codeSnippet]) => (
-            <Code codeSnippetId={id} codeSnippet={codeSnippet} />
+            <Code key={id} codeSnippetId={id} codeSnippet={codeSnippet} />
           ))}
         </div>
       )}
