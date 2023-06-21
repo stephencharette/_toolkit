@@ -111,7 +111,6 @@ app.patch(
       updateFields["lang"] = req.query.lang;
     }
     if (req.query.code) {
-      console.log(req.query.code);
       updateFields["code"] = req.query.code;
     }
 

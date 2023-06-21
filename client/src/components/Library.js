@@ -13,7 +13,6 @@ function Library() {
     const getCodeSnippets = async () => {
       try {
         const serverUrl = "http://localhost:3001";
-        console.log("fetching data...");
         const result = await axios({
           method: "get",
           url: `${serverUrl}/users/${userId}/code_snippets`,
@@ -28,7 +27,7 @@ function Library() {
 
         setCodeSnippets(result.data.library.codeSnippets);
       } catch (error) {
-        console.log("asdasdfsdaf");
+        // TODO: handle error...
       } finally {
         setIsLoading(false);
       }
@@ -44,6 +43,7 @@ function Library() {
         <OpenSidebarButton />
       </div>
       {isLoading ? (
+        // TODO: better loading thingy here...
         <p>loading...</p>
       ) : (
         <div>

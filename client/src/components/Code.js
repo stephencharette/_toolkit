@@ -27,7 +27,6 @@ function Code({ codeSnippetId, codeSnippet }) {
 
   const handleCodeChange = async (event) => {
     const value = event.target.value;
-    console.log(value);
     setCode(value);
     const serverUrl = "http://localhost:3001";
     const result = await axios({

@@ -21,8 +21,8 @@ function Result({ command }) {
           setIsCopied(false);
         }, 1500);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch((error) => {
+        // TODO: handle error here...
       });
   };
 
