@@ -9,6 +9,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Auth } from "./Auth";
 // import { useContext } from "react";
 import { UserProvider } from "./UserContext";
+import Library from "./components/Library";
 
 const router = createBrowserRouter([
   {
@@ -16,8 +17,8 @@ const router = createBrowserRouter([
     element: <Root />,
     children: [
       {
-        path: "login",
-        element: <Auth />,
+        path: "library",
+        element: <Library />,
       },
       {
         path: "rails",

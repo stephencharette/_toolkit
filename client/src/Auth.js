@@ -1,16 +1,35 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { auth, googleProvider } from "./config/auth";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { UserContext } from "./UserContext";
+import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
 
 export const Auth = () => {
   const { updateUser, removeUser } = useContext(UserContext);
-  const { userId } = useContext(UserContext);
+  const { userId, userAvatar, userDisplayName, userEmail } =
+    useContext(UserContext);
 
   const signInWithGoogle = async () => {
     try {
       let response = await signInWithPopup(auth, googleProvider);
-      updateUser(response.user.uid);
+      const [userId, idToken] = await Promise.all([
+        response.user.uid,
+        response.user.getIdToken(),
+      ]);
+      const authToken = `Bearer ${idToken}`;
+      const serverUrl = "http://localhost:3001";
+      const result = await axios({
+        method: "post",
+        url: `${serverUrl}/api/login`,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: authToken,
+        },
+      });
+      if (result.status !== 200 || userId != result.data.userId) return;
+
+      updateUser(response.user, authToken);
     } catch (err) {
       console.error(err);
     }
@@ -26,16 +45,34 @@ export const Auth = () => {
 
   if (userId) {
     return (
-      <button onClick={logOut} type="button" class="auth-btn">
-        <div className="flex items-center space-x-2 mx-auto">Sign Out</div>
-      </button>
+      <div
+        className="flex items-center dark:bg-gray-700 bg-gray-100 rounded-lg cursor-pointer"
+        onClick={logOut}
+      >
+        <img
+          src={userAvatar}
+          referrerPolicy="no-referrer"
+          id="avatarButton"
+          type="button"
+          className="w-10 h-10 rounded-l-lg"
+          alt="User profile picture"
+        ></img>
+        <div className="flex ml-auto items-center w-full space-x-2">
+          <p className="dark:text-white text-gray-800">Sign out</p>
+          <ArrowLeftOnRectangleIcon
+            className="dark:text-white"
+            width={22}
+            height={22}
+          />
+        </div>
+      </div>
     );
   } else {
     return (
-      <button onClick={signInWithGoogle} type="button" class="auth-btn">
+      <button onClick={signInWithGoogle} type="button" className="auth-btn">
         <div className="flex items-center space-x-2 mx-auto">
           <svg
-            class="w-4 h-4"
+            className="w-4 h-4"
             aria-hidden="true"
             focusable="false"
             data-prefix="fab"

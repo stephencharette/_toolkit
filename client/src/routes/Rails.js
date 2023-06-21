@@ -28,7 +28,7 @@ function Rails() {
                   Generators
                 </div>
                 <div className="text-left w-full font-mono">
-                  rails generate scaffold
+                  rails generate ...
                 </div>
               </div>
               <CommandLineIcon className="h-8 w-8" />
@@ -42,9 +42,7 @@ function Rails() {
                 <div className="text-left w-full text-lg font-semibold">
                   String Format Time
                 </div>
-                <div className="w-full font-mono">
-                  mytime.strftime("%a %b %y")
-                </div>
+                <div className="w-full font-mono">t.strftime("%a %b %y")</div>
               </div>
               <ArrowTopRightOnSquareIcon className="h-7 w-7" />
             </label>

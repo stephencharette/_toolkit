@@ -5,8 +5,6 @@ import { UserContext } from "../UserContext";
 import { Auth } from "../Auth";
 
 function Sidebar() {
-  const { userId } = useContext(UserContext);
-
   return (
     // TODO: add logo or something here...
     // TODO: add PostgreSQL (pg_restore, pg_dump, ...)
@@ -21,8 +19,13 @@ function Sidebar() {
               <span className="ml-3">Ruby on Rails</span>
             </Link>
           </li>
+          <li>
+            <Link to={"/library"} className="sidebar-link group">
+              <span className="ml-3">Library</span>
+            </Link>
+          </li>
         </ul>
-        <div class="">
+        <div className="">
           <Switcher />
         </div>
       </div>
