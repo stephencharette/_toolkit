@@ -126,6 +126,47 @@ app.patch(
   }
 );
 
+app.post(
+  "/users/:user_id/code_snippets",
+  verifyTokenMiddleware,
+  async (req, res) => {
+    const userId = req.params.user_id;
+    const codeSnippetsCollection = await librariesCollection
+      .doc(userId)
+      .collection("code_snippets");
+
+    let fields = {};
+    if (req.query.lang) {
+      fields["lang"] = req.query.lang;
+    }
+    if (req.query.code) {
+      fields["code"] = req.query.code;
+    }
+
+    let documentId = null;
+
+    const result = await codeSnippetsCollection.add(fields);
+
+    return res.status(200).json({ documentId: result.id });
+  }
+);
+
+app.delete(
+  "/users/:user_id/code_snippets/:code_snippet_id",
+  verifyTokenMiddleware,
+  async (req, res) => {
+    const userId = req.params.user_id;
+    const codeSnippetId = req.params.code_snippet_id;
+    const codeSnippetsCollection = await librariesCollection
+      .doc(userId)
+      .collection("code_snippets");
+
+    await codeSnippetsCollection.doc(codeSnippetId).delete();
+
+    return res.status(200);
+  }
+);
+
 module.exports = app;
 
 // M9I0otW7sqgzBQxfB46rBZOzYSd2

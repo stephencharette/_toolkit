@@ -54,7 +54,10 @@ export const Auth = () => {
           alt="User profile picture"
         ></img>
         <div className="flex items-center flex-col space-y-1">
-          <p className="dark:text-white text-left text-gray-800">
+          <p
+            onClick={logOut}
+            className="dark:text-white text-left text-gray-800"
+          >
             {userDisplayName}
           </p>
           {/* <div className="ml-auto btn-sm w-14">Sign out</div> */}

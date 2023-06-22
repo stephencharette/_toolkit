@@ -4,8 +4,14 @@ import * as Constants from "../constants/code.js";
 import axios from "axios";
 import { UserContext } from "../UserContext.js";
 import SearchDropdown from "./form/SearchDropdown.js";
+import { Trash } from "heroicons-react";
 
-function Code({ codeSnippetId, codeSnippet }) {
+function Code({
+  codeSnippetId,
+  codeSnippet,
+  handleAddCodeSnippet,
+  handleDestroyCodeSnippet,
+}) {
   const allLanguageOptions = Constants.LANGUAGE_OPTIONS;
 
   const { userId, authToken } = useContext(UserContext);
@@ -45,36 +51,76 @@ function Code({ codeSnippetId, codeSnippet }) {
   //   }
   // };
 
+  const handleDestroy = async () => {
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      handleDestroyCodeSnippet(codeSnippetId);
+
+      const result = await axios({
+        method: "delete",
+        url: `${process.env.REACT_APP_HOST}/users/${userId}/code_snippets/${codeSnippetId}`,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: authToken,
+        },
+      });
+    }
+  };
+
   const handleCodeChange = async (event) => {
     const value = event.target.value;
     setCode(value);
-    const result = await axios({
-      method: "patch",
-      url: `${
-        process.env.REACT_APP_HOST
-      }/users/${userId}/code_snippets/${codeSnippetId}?code=${encodeURIComponent(
-        value
-      )}`,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        Authorization: authToken,
-      },
-    });
+    if (codeSnippetId === "new") {
+      const result = await axios({
+        method: "post",
+        url: `${
+          process.env.REACT_APP_HOST
+        }/users/${userId}/code_snippets/?code=${encodeURIComponent(value)}`,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: authToken,
+        },
+      });
+
+      handleAddCodeSnippet({ code: value, documentId: result.data.documentId });
+    } else {
+      const result = await axios({
+        method: "patch",
+        url: `${
+          process.env.REACT_APP_HOST
+        }/users/${userId}/code_snippets/${codeSnippetId}?code=${encodeURIComponent(
+          value
+        )}`,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: authToken,
+        },
+      });
+    }
   };
 
   return (
+    // TODO: add title here...
     <div>
-      <select
-        value={language}
-        onChange={handleLanguageChange}
-        className="font-mono"
-      >
-        {languageOptions.map((option, index) => (
-          <option key={index} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+      <div className="flex items-center">
+        <select
+          value={language}
+          onChange={handleLanguageChange}
+          className="font-mono"
+        >
+          {languageOptions.map((option, index) => (
+            <option key={index} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+        <button
+          type="button"
+          onClick={handleDestroy}
+          class="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-1 py-1 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+        >
+          <Trash width={14} height={14} />
+        </button>
+      </div>
 
       {/* <SearchDropdown
         selected={language}
@@ -86,6 +132,7 @@ function Code({ codeSnippetId, codeSnippet }) {
         setIsHidden={setDropdownIsHidden}
       /> */}
 
+      {/* TODO: add saving... label */}
       <CodeEditor
         value={code}
         language={language}
