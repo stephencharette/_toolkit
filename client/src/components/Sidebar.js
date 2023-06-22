@@ -11,6 +11,11 @@ function Sidebar() {
     <aside id="separator-sidebar" aria-label="Sidenav">
       <div className="sidebar-container flex flex-col justify-between">
         <ul className="space-y-2">
+          <li className="mb-6">
+            <h1 className="font-mono select-none text-3xl font-bold">
+              _toolkit
+            </h1>
+          </li>
           <li>
             <Auth />
           </li>
