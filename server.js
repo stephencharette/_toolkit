@@ -34,6 +34,8 @@ const librariesCollection = db.collection("libraries");
 // TODO: hitting twice???
 const verifyTokenMiddleware = async (req, res, next) => {
   const token = req.headers.authorization;
+  if (!token) return;
+
   const idToken = token.split("Bearer ")[1];
 
   if (!token || !token.startsWith("Bearer ")) {

@@ -8,7 +8,6 @@ function SearchDropdown({
   isHidden,
   options,
 }) {
-  console.log(selected);
   if (options) {
     return (
       <div

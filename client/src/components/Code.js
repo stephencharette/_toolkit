@@ -19,10 +19,9 @@ function Code({ codeSnippetId, codeSnippet }) {
     const label = event.target.name;
     setLanguage(value);
     // setDropdownIsHidden(true);
-    const serverUrl = "http://localhost:3001";
     const result = await axios({
       method: "patch",
-      url: `${serverUrl}/users/${userId}/code_snippets/${codeSnippetId}?lang=${value}`,
+      url: `${process.env.REACT_APP_HOST}/users/${userId}/code_snippets/${codeSnippetId}?lang=${value}`,
       headers: {
         "Access-Control-Allow-Origin": "*",
         Authorization: authToken,
@@ -49,10 +48,11 @@ function Code({ codeSnippetId, codeSnippet }) {
   const handleCodeChange = async (event) => {
     const value = event.target.value;
     setCode(value);
-    const serverUrl = "http://localhost:3001";
     const result = await axios({
       method: "patch",
-      url: `${serverUrl}/users/${userId}/code_snippets/${codeSnippetId}?code=${encodeURIComponent(
+      url: `${
+        process.env.REACT_APP_HOST
+      }/users/${userId}/code_snippets/${codeSnippetId}?code=${encodeURIComponent(
         value
       )}`,
       headers: {

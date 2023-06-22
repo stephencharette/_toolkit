@@ -18,10 +18,9 @@ export const Auth = () => {
         response.user.getIdToken(),
       ]);
       const authToken = `Bearer ${idToken}`;
-      const serverUrl = "http://localhost:3001";
       const result = await axios({
         method: "post",
-        url: `${serverUrl}/api/login`,
+        url: `${process.env.REACT_APP_HOST}/api/login`,
         headers: {
           "Access-Control-Allow-Origin": "*",
           Authorization: authToken,
@@ -45,25 +44,20 @@ export const Auth = () => {
 
   if (userId) {
     return (
-      <div
-        className="flex items-center dark:bg-gray-700 bg-gray-100 rounded-lg cursor-pointer"
-        onClick={logOut}
-      >
+      <div className="flex items-center space-x-2">
         <img
           src={userAvatar}
           referrerPolicy="no-referrer"
           id="avatarButton"
           type="button"
-          className="w-10 h-10 rounded-l-lg"
+          className="w-10 h-10 mx-auto rounded-full"
           alt="User profile picture"
         ></img>
-        <div className="flex ml-auto items-center w-full space-x-2">
-          <p className="dark:text-white text-gray-800">Sign out</p>
-          <ArrowLeftOnRectangleIcon
-            className="dark:text-white"
-            width={22}
-            height={22}
-          />
+        <div className="flex items-center flex-col space-y-1">
+          <p className="dark:text-white text-left text-gray-800">
+            {userDisplayName}
+          </p>
+          {/* <div className="ml-auto btn-sm w-14">Sign out</div> */}
         </div>
       </div>
     );

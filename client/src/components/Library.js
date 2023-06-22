@@ -13,10 +13,9 @@ function Library() {
   useEffect(() => {
     const getCodeSnippets = async () => {
       try {
-        const serverUrl = "http://localhost:3001";
         const result = await axios({
           method: "get",
-          url: `${serverUrl}/users/${userId}/code_snippets`,
+          url: `${process.env.REACT_APP_HOST}/users/${userId}/code_snippets`,
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": "true",
