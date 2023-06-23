@@ -9,11 +9,7 @@ const admin = require("firebase-admin");
 
 const port = process.env.PORT || 3001;
 
-app.listen(port, () =>
-  console.log(
-    `Listening on port ${port} ${process.env.REACT_APP_NOT_SECRET_CODE}`
-  )
-);
+app.listen(port, () => console.log(`Listening on port ${port}`));
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, "client/build")));

@@ -25,7 +25,6 @@ function Library() {
 
         if (result.status !== 200 || userId != result.data.userId) return;
 
-        console.log(result.data.library.codeSnippets);
         setCodeSnippets(result.data.library.codeSnippets);
       } catch (error) {
         // TODO: handle error...
