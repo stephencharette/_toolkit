@@ -163,6 +163,17 @@ app.delete(
   }
 );
 
+app.get("/*", function (req, res) {
+  res.sendFile(
+    path.join(__dirname, "./client/public/index.html"),
+    function (err) {
+      if (err) {
+        res.status(500).send(err);
+      }
+    }
+  );
+});
+
 module.exports = app;
 
 // M9I0otW7sqgzBQxfB46rBZOzYSd2
