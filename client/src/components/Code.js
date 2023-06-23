@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import useDarkSide from "./hooks/useDarkSide";
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import * as Constants from "../constants/code.js";
 import axios from "axios";
@@ -12,6 +13,7 @@ function Code({
   handleAddCodeSnippet,
   handleDestroyCodeSnippet,
 }) {
+  const [colorTheme, setTheme] = useDarkSide();
   const allLanguageOptions = Constants.LANGUAGE_OPTIONS;
 
   const { userId, authToken } = useContext(UserContext);
@@ -52,6 +54,7 @@ function Code({
   // };
 
   const handleDestroy = async () => {
+    // TODO: better alert box!
     if (window.confirm("Are you sure you want to delete this item?")) {
       handleDestroyCodeSnippet(codeSnippetId);
 
@@ -107,6 +110,7 @@ function Code({
           onChange={handleLanguageChange}
           className="font-mono"
         >
+          <option value="">Select a language</option>
           {languageOptions.map((option, index) => (
             <option key={index} value={option.value}>
               {option.label}
@@ -133,15 +137,17 @@ function Code({
       /> */}
 
       {/* TODO: add saving... label */}
+      {/* TODO: colorTheme reload this element when changed... */}
       <CodeEditor
         value={code}
         language={language}
         placeholder=""
         onBlur={handleCodeChange}
         padding={15}
+        data-color-mode={colorTheme === "dark" ? "light" : "dark"}
         style={{
           fontSize: 14,
-          backgroundColor: "#1e293b",
+          // backgroundColor: "#1e293b",
           borderRadius: "10px",
           borderStyle: "solid",
           border: "1px",
