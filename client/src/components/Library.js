@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import OpenSidebarButton from "./OpenSidebarButton";
 import Code from "./Code";
 import { UserContext } from "../UserContext";
-import axios from "axios";
+import axios from "../config/axios";
 import SearchDropdown from "./form/SearchDropdown";
 
 function Library() {
@@ -15,7 +15,7 @@ function Library() {
       try {
         const result = await axios({
           method: "get",
-          url: `${process.env.REACT_APP_HOST}/users/${userId}/code_snippets`,
+          url: `/users/${userId}/code_snippets`,
           headers: {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": "true",

@@ -3,7 +3,7 @@ import { auth, googleProvider } from "./config/auth";
 import { signInWithPopup, signOut } from "firebase/auth";
 import { UserContext } from "./UserContext";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
-import axios from "axios";
+import axios from "./config/axios";
 
 export const Auth = () => {
   const { updateUser, removeUser } = useContext(UserContext);
@@ -20,7 +20,7 @@ export const Auth = () => {
       const authToken = `Bearer ${idToken}`;
       const result = await axios({
         method: "post",
-        url: `${process.env.REACT_APP_HOST}/api/login`,
+        url: `/api/login`,
         headers: {
           "Access-Control-Allow-Origin": "*",
           Authorization: authToken,

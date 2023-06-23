@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import useDarkSide from "./hooks/useDarkSide";
 import CodeEditor from "@uiw/react-textarea-code-editor";
 import * as Constants from "../constants/code.js";
-import axios from "axios";
+import axios from "../config/axios";
 import { UserContext } from "../UserContext.js";
 import SearchDropdown from "./form/SearchDropdown.js";
 import { Trash } from "heroicons-react";
@@ -29,7 +29,7 @@ function Code({
     // setDropdownIsHidden(true);
     const result = await axios({
       method: "patch",
-      url: `${process.env.REACT_APP_HOST}/users/${userId}/code_snippets/${codeSnippetId}?lang=${value}`,
+      url: `/users/${userId}/code_snippets/${codeSnippetId}?lang=${value}`,
       headers: {
         "Access-Control-Allow-Origin": "*",
         Authorization: authToken,
@@ -60,7 +60,7 @@ function Code({
 
       const result = await axios({
         method: "delete",
-        url: `${process.env.REACT_APP_HOST}/users/${userId}/code_snippets/${codeSnippetId}`,
+        url: `/users/${userId}/code_snippets/${codeSnippetId}`,
         headers: {
           "Access-Control-Allow-Origin": "*",
           Authorization: authToken,
@@ -75,9 +75,9 @@ function Code({
     if (codeSnippetId === "new") {
       const result = await axios({
         method: "post",
-        url: `${
-          process.env.REACT_APP_HOST
-        }/users/${userId}/code_snippets/?code=${encodeURIComponent(value)}`,
+        url: `/users/${userId}/code_snippets/?code=${encodeURIComponent(
+          value
+        )}`,
         headers: {
           "Access-Control-Allow-Origin": "*",
           Authorization: authToken,
@@ -88,9 +88,8 @@ function Code({
     } else {
       const result = await axios({
         method: "patch",
-        url: `${
-          process.env.REACT_APP_HOST
-        }/users/${userId}/code_snippets/${codeSnippetId}?code=${encodeURIComponent(
+        url: `
+        /users/${userId}/code_snippets/${codeSnippetId}?code=${encodeURIComponent(
           value
         )}`,
         headers: {
