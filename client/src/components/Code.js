@@ -21,20 +21,27 @@ function Code({
   const [language, setLanguage] = useState(codeSnippet.lang);
   // const [dropdownIsHidden, setDropdownIsHidden] = useState(true);
   const [languageOptions, setLanguageOptions] = useState(allLanguageOptions);
+  const [inError, setInError] = useState(false);
 
   const handleLanguageChange = async (event) => {
     const value = event.target.value;
     const label = event.target.name;
+    if (value === language) return;
     setLanguage(value);
     // setDropdownIsHidden(true);
-    const result = await axios({
-      method: "patch",
-      url: `/users/${userId}/code_snippets/${codeSnippetId}?lang=${value}`,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        Authorization: authToken,
-      },
-    });
+    try {
+      const result = await axios({
+        method: "patch",
+        url: `/users/${userId}/code_snippets/${codeSnippetId}?lang=${value}`,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: authToken,
+        },
+      });
+      // TODO: add rescue block here...
+    } catch (error) {
+      setInError(true);
+    }
   };
 
   // const handleDropdownClick = () => {
@@ -71,32 +78,43 @@ function Code({
 
   const handleCodeChange = async (event) => {
     const value = event.target.value;
+    if (value === code) return;
     setCode(value);
     if (codeSnippetId === "new") {
-      const result = await axios({
-        method: "post",
-        url: `/users/${userId}/code_snippets/?code=${encodeURIComponent(
-          value
-        )}`,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          Authorization: authToken,
-        },
-      });
+      try {
+        const result = await axios({
+          method: "post",
+          url: `/users/${userId}/code_snippets/?code=${encodeURIComponent(
+            value
+          )}`,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            Authorization: authToken,
+          },
+        });
 
-      handleAddCodeSnippet({ code: value, documentId: result.data.documentId });
+        handleAddCodeSnippet({
+          code: value,
+          documentId: result.data.documentId,
+        });
+      } catch (error) {
+        setInError(true);
+      }
     } else {
-      const result = await axios({
-        method: "patch",
-        url: `
-        /users/${userId}/code_snippets/${codeSnippetId}?code=${encodeURIComponent(
-          value
-        )}`,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          Authorization: authToken,
-        },
-      });
+      try {
+        const result = await axios({
+          method: "patch",
+          url: `/users/${userId}/code_snippets/${codeSnippetId}?code=${encodeURIComponent(
+            value
+          )}`,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            Authorization: authToken,
+          },
+        });
+      } catch (error) {
+        setInError(true);
+      }
     }
   };
 
@@ -124,7 +142,6 @@ function Code({
           <Trash width={14} height={14} />
         </button>
       </div>
-
       {/* <SearchDropdown
         selected={language}
         options={}
@@ -134,8 +151,6 @@ function Code({
         isHidden={dropdownIsHidden}
         setIsHidden={setDropdownIsHidden}
       /> */}
-
-      {/* TODO: add saving... label */}
       {/* TODO: colorTheme reload this element when changed... */}
       <CodeEditor
         value={code}
@@ -155,6 +170,15 @@ function Code({
             "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
         }}
       />
+      {inError === true && (
+        <div className="flex items-center space-x-2 mt-1">
+          <span class="sr-only">Red circle</span>
+          <span class="flex w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+          <p className="dark:text-gray-200 font-semibold text-sm text-gray-800">
+            Could not save...
+          </p>
+        </div>
+      )}
     </div>
   );
 }

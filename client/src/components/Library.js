@@ -4,13 +4,15 @@ import Code from "./Code";
 import { UserContext } from "../UserContext";
 import axios from "../config/axios";
 import SearchDropdown from "./form/SearchDropdown";
+import { Auth } from "../Auth";
 
 function Library() {
   const { userId, authToken } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const [codeSnippets, setCodeSnippets] = useState({});
-
+  // TODO: did component mount?
   useEffect(() => {
+    if (!userId) return;
     const getCodeSnippets = async () => {
       try {
         const result = await axios({
@@ -55,41 +57,71 @@ function Library() {
     newCodeSnippets[documentId] = document;
     setCodeSnippets(newCodeSnippets);
   };
-  return (
-    // TODO: add filters
-    <div className="space-y-3">
-      <div className="flex items-center">
-        <h1 className="font-semibold text-3xl text-left">Your Library</h1>
-        <OpenSidebarButton />
+  if (!userId) {
+    return (
+      <div className="mt-5 space-y-3">
+        <h1 className="text-2xl font-bold">
+          You must be logged in to access your Library
+        </h1>
       </div>
-      {isLoading ? (
-        // TODO: better loading thingy here...
-        <p>loading...</p>
-      ) : (
-        <div className="space-y-3 w-full flex flex-col">
-          <SearchDropdown />
-          {Object.entries(codeSnippets).map(([id, codeSnippet]) => (
-            <Code
-              handleAddCodeSnippet={handleAddCodeSnippetDocument}
-              handleDestroyCodeSnippet={handleDestroyCodeSnippet}
-              key={id}
-              codeSnippetId={id}
-              codeSnippet={codeSnippet}
-            />
-          ))}
-
-          {/* TODO: disable button until next item is saved. */}
-          <button
-            type="button"
-            className="small w-10 ml-auto"
-            onClick={handleAddCodeSnippet}
-          >
-            +
-          </button>
+    );
+  } else {
+    return (
+      // TODO: add filters
+      <div className="space-y-3">
+        <div className="flex items-center">
+          <h1 className="font-semibold text-3xl text-left">Your Library</h1>
+          <OpenSidebarButton />
         </div>
-      )}
-    </div>
-  );
+        {isLoading ? (
+          <div
+            role="status"
+            class="space-y-8 flex flex-col w-full animate-pulse md:space-y-2 md:flex md:items-center"
+          >
+            <div class="flex items-center justify-center w-full h-48 bg-gray-300 rounded-md dark:bg-gray-700">
+              <svg
+                class="w-6 h-6 text-gray-800 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 16"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 4 1 8l4 4m10-8 4 4-4 4M11 1 9 15"
+                />
+              </svg>
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        ) : (
+          <div className="space-y-3 w-full flex flex-col">
+            <SearchDropdown />
+            {Object.entries(codeSnippets).map(([id, codeSnippet]) => (
+              <Code
+                handleAddCodeSnippet={handleAddCodeSnippetDocument}
+                handleDestroyCodeSnippet={handleDestroyCodeSnippet}
+                key={id}
+                codeSnippetId={id}
+                codeSnippet={codeSnippet}
+              />
+            ))}
+
+            {/* TODO: disable button until next item is saved. */}
+            <button
+              type="button"
+              class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+            >
+              Add Code Snippet
+            </button>
+          </div>
+        )}
+      </div>
+    );
+  }
 }
 
 export default Library;
