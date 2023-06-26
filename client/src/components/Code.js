@@ -22,6 +22,7 @@ function Code({
   // const [dropdownIsHidden, setDropdownIsHidden] = useState(true);
   const [languageOptions, setLanguageOptions] = useState(allLanguageOptions);
   const [inError, setInError] = useState(false);
+  // TODO: add 'not saved' since we are doing blur action...
 
   const handleLanguageChange = async (event) => {
     const value = event.target.value;
@@ -172,8 +173,8 @@ function Code({
       />
       {inError === true && (
         <div className="flex items-center space-x-2 mt-1">
-          <span class="sr-only">Red circle</span>
-          <span class="flex w-2.5 h-2.5 bg-red-500 rounded-full"></span>
+          <span className="sr-only">Red circle</span>
+          <span className="flex w-2.5 h-2.5 bg-red-500 rounded-full"></span>
           <p className="dark:text-gray-200 font-semibold text-sm text-gray-800">
             Could not save...
           </p>

@@ -76,11 +76,11 @@ function Library() {
         {isLoading ? (
           <div
             role="status"
-            class="space-y-8 flex flex-col w-full animate-pulse md:space-y-2 md:flex md:items-center"
+            className="space-y-8 flex flex-col w-full animate-pulse md:space-y-2 md:flex md:items-center"
           >
-            <div class="flex items-center justify-center w-full h-48 bg-gray-300 rounded-md dark:bg-gray-700">
+            <div className="flex items-center justify-center w-full h-48 bg-gray-300 rounded-md dark:bg-gray-700">
               <svg
-                class="w-6 h-6 text-gray-800 dark:text-white"
+                className="w-6 h-6 text-gray-800 dark:text-white"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -88,13 +88,13 @@ function Library() {
               >
                 <path
                   stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
                   d="M5 4 1 8l4 4m10-8 4 4-4 4M11 1 9 15"
                 />
               </svg>
-              <span class="sr-only">Loading...</span>
+              <span className="sr-only">Loading...</span>
             </div>
           </div>
         ) : (
@@ -113,7 +113,8 @@ function Library() {
             {/* TODO: disable button until next item is saved. */}
             <button
               type="button"
-              class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              onClick={handleAddCodeSnippet}
+              className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
             >
               Add Code Snippet
             </button>
