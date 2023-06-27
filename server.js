@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 let bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-FIREBASE_PATH = "/etc/secrets/firebase.json";
+FIREBASE_PATH = "./etc/secrets/firebase.json";
 let serviceAccount = require(FIREBASE_PATH);
 
 admin.initializeApp({
@@ -165,7 +165,7 @@ app.delete(
 
 app.get("/*", function (req, res) {
   res.sendFile(
-    path.join(__dirname, "/client/public/index.html"),
+    path.join(__dirname, "./client/public/index.html"),
     function (err) {
       if (err) {
         res.status(500).send(err);

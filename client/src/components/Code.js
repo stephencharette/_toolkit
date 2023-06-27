@@ -22,7 +22,10 @@ function Code({
   // const [dropdownIsHidden, setDropdownIsHidden] = useState(true);
   const [languageOptions, setLanguageOptions] = useState(allLanguageOptions);
   const [inError, setInError] = useState(false);
-  // TODO: add 'not saved' since we are doing blur action...
+  const [isSaved, setIsSaved] = useState(
+    codeSnippetId === "new" ? false : true
+  );
+  // TODO: make constant or something...
 
   const handleLanguageChange = async (event) => {
     const value = event.target.value;
@@ -77,6 +80,10 @@ function Code({
     }
   };
 
+  const handleCodeType = () => {
+    setIsSaved(false);
+  };
+
   const handleCodeChange = async (event) => {
     const value = event.target.value;
     if (value === code) return;
@@ -98,6 +105,7 @@ function Code({
           code: value,
           documentId: result.data.documentId,
         });
+        // setIsSaved(true);
       } catch (error) {
         setInError(true);
       }
@@ -117,6 +125,7 @@ function Code({
         setInError(true);
       }
     }
+    setIsSaved(true);
   };
 
   return (
@@ -158,6 +167,7 @@ function Code({
         language={language}
         placeholder=""
         onBlur={handleCodeChange}
+        onChange={handleCodeType}
         padding={15}
         data-color-mode={colorTheme === "dark" ? "light" : "dark"}
         style={{
@@ -177,6 +187,15 @@ function Code({
           <span className="flex w-2.5 h-2.5 bg-red-500 rounded-full"></span>
           <p className="dark:text-gray-200 font-semibold text-sm text-gray-800">
             Could not save...
+          </p>
+        </div>
+      )}
+      {isSaved === false && (
+        <div className="flex items-center space-x-2 mt-1">
+          <span className="sr-only">Orange circle</span>
+          <span className="flex w-2.5 h-2.5 bg-orange-300 rounded-full"></span>
+          <p className="dark:text-gray-200 font-semibold text-sm text-gray-800">
+            Not saved.
           </p>
         </div>
       )}
