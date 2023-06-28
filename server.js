@@ -17,161 +17,161 @@ app.use(express.static(path.join(__dirname, "client/build")));
 let bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-FIREBASE_PATH = "/etc/secrets/firebase.json";
-let serviceAccount = require(FIREBASE_PATH);
+// FIREBASE_PATH = "/etc/secrets/firebase.json";
+// let serviceAccount = require(FIREBASE_PATH);
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+// });
 
-const db = admin.firestore();
-const librariesCollection = db.collection("libraries");
+// const db = admin.firestore();
+// const librariesCollection = db.collection("libraries");
 
 // TODO: hitting twice???
-const verifyTokenMiddleware = async (req, res, next) => {
-  const token = req.headers.authorization;
-  if (!token) return;
+// const verifyTokenMiddleware = async (req, res, next) => {
+//   const token = req.headers.authorization;
+//   if (!token) return;
 
-  const idToken = token.split("Bearer ")[1];
+//   const idToken = token.split("Bearer ")[1];
 
-  if (!token || !token.startsWith("Bearer ")) {
-    return res.status(401).json({ error: "Unauthorized" });
-  }
+//   if (!token || !token.startsWith("Bearer ")) {
+//     return res.status(401).json({ error: "Unauthorized" });
+//   }
 
-  // Verify the ID token and extract the user ID
-  const decodedToken = await admin
-    .auth()
-    .verifyIdToken(idToken)
-    .then((decodedToken) => {
-      req.userId = decodedToken.uid;
-    })
-    .catch((error) => {
-      console.error("Error verifying ID token:", error);
-    });
+//   // Verify the ID token and extract the user ID
+//   const decodedToken = await admin
+//     .auth()
+//     .verifyIdToken(idToken)
+//     .then((decodedToken) => {
+//       req.userId = decodedToken.uid;
+//     })
+//     .catch((error) => {
+//       console.error("Error verifying ID token:", error);
+//     });
 
-  next();
-};
+//   next();
+// };
 
-app.post("/api/login", verifyTokenMiddleware, (req, res) => {
-  return res.status(200).json({ userId: req.userId });
-});
+// app.post("/api/login", verifyTokenMiddleware, (req, res) => {
+//   return res.status(200).json({ userId: req.userId });
+// });
 
-app.get(
-  "/users/:user_id/code_snippets",
-  verifyTokenMiddleware,
-  async (req, res) => {
-    const userId = req.params.user_id;
-    const library = await getLibrary(userId);
+// app.get(
+//   "/users/:user_id/code_snippets",
+//   verifyTokenMiddleware,
+//   async (req, res) => {
+//     const userId = req.params.user_id;
+//     const library = await getLibrary(userId);
 
-    return res.status(200).json({ userId: userId, library: library });
-  }
-);
+//     return res.status(200).json({ userId: userId, library: library });
+//   }
+// );
 
-async function getLibrary(userId) {
-  const codeSnippetsCollection = librariesCollection
-    .doc(userId)
-    .collection("code_snippets");
+// async function getLibrary(userId) {
+//   const codeSnippetsCollection = librariesCollection
+//     .doc(userId)
+//     .collection("code_snippets");
 
-  let codeSnippets = {};
+//   let codeSnippets = {};
 
-  await codeSnippetsCollection
-    .get()
-    .then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
-        const codeSnippetId = doc.id;
-        const data = doc.data();
+//   await codeSnippetsCollection
+//     .get()
+//     .then((querySnapshot) => {
+//       querySnapshot.forEach((doc) => {
+//         const codeSnippetId = doc.id;
+//         const data = doc.data();
 
-        codeSnippets[codeSnippetId] = data;
-      });
-    })
-    .catch((error) => {
-      console.error("Error getting code snippets: ", error);
-    });
+//         codeSnippets[codeSnippetId] = data;
+//       });
+//     })
+//     .catch((error) => {
+//       console.error("Error getting code snippets: ", error);
+//     });
 
-  return { codeSnippets: codeSnippets };
-}
+//   return { codeSnippets: codeSnippets };
+// }
 
-async function initialize() {}
+// async function initialize() {}
 
-initialize();
+// initialize();
 
-app.get("/");
+// app.get("/");
 
-app.patch(
-  "/users/:user_id/code_snippets/:code_snippet_id",
-  verifyTokenMiddleware,
-  async (req, res) => {
-    const userId = req.params.user_id;
-    const codeSnippetId = req.params.code_snippet_id;
-    const codeSnippetsCollection = await librariesCollection
-      .doc(userId)
-      .collection("code_snippets")
-      .doc(codeSnippetId);
+// app.patch(
+//   "/users/:user_id/code_snippets/:code_snippet_id",
+//   verifyTokenMiddleware,
+//   async (req, res) => {
+//     const userId = req.params.user_id;
+//     const codeSnippetId = req.params.code_snippet_id;
+//     const codeSnippetsCollection = await librariesCollection
+//       .doc(userId)
+//       .collection("code_snippets")
+//       .doc(codeSnippetId);
 
-    let updateFields = {};
-    if (req.query.lang) {
-      updateFields["lang"] = req.query.lang;
-    }
-    if (req.query.code) {
-      updateFields["code"] = req.query.code;
-    }
+//     let updateFields = {};
+//     if (req.query.lang) {
+//       updateFields["lang"] = req.query.lang;
+//     }
+//     if (req.query.code) {
+//       updateFields["code"] = req.query.code;
+//     }
 
-    await codeSnippetsCollection.update(updateFields);
+//     await codeSnippetsCollection.update(updateFields);
 
-    return res.status(200).json({ code_snippet: updateFields });
-  }
-);
+//     return res.status(200).json({ code_snippet: updateFields });
+//   }
+// );
 
-app.post(
-  "/users/:user_id/code_snippets",
-  verifyTokenMiddleware,
-  async (req, res) => {
-    const userId = req.params.user_id;
-    const codeSnippetsCollection = await librariesCollection
-      .doc(userId)
-      .collection("code_snippets");
+// app.post(
+//   "/users/:user_id/code_snippets",
+//   verifyTokenMiddleware,
+//   async (req, res) => {
+//     const userId = req.params.user_id;
+//     const codeSnippetsCollection = await librariesCollection
+//       .doc(userId)
+//       .collection("code_snippets");
 
-    let fields = {};
-    if (req.query.lang) {
-      fields["lang"] = req.query.lang;
-    }
-    if (req.query.code) {
-      fields["code"] = req.query.code;
-    }
+//     let fields = {};
+//     if (req.query.lang) {
+//       fields["lang"] = req.query.lang;
+//     }
+//     if (req.query.code) {
+//       fields["code"] = req.query.code;
+//     }
 
-    let documentId = null;
+//     let documentId = null;
 
-    const result = await codeSnippetsCollection.add(fields);
+//     const result = await codeSnippetsCollection.add(fields);
 
-    return res.status(200).json({ documentId: result.id });
-  }
-);
+//     return res.status(200).json({ documentId: result.id });
+//   }
+// );
 
-app.delete(
-  "/users/:user_id/code_snippets/:code_snippet_id",
-  verifyTokenMiddleware,
-  async (req, res) => {
-    const userId = req.params.user_id;
-    const codeSnippetId = req.params.code_snippet_id;
-    const codeSnippetsCollection = await librariesCollection
-      .doc(userId)
-      .collection("code_snippets");
+// app.delete(
+//   "/users/:user_id/code_snippets/:code_snippet_id",
+//   verifyTokenMiddleware,
+//   async (req, res) => {
+//     const userId = req.params.user_id;
+//     const codeSnippetId = req.params.code_snippet_id;
+//     const codeSnippetsCollection = await librariesCollection
+//       .doc(userId)
+//       .collection("code_snippets");
 
-    await codeSnippetsCollection.doc(codeSnippetId).delete();
+//     await codeSnippetsCollection.doc(codeSnippetId).delete();
 
-    return res.status(200);
-  }
-);
+//     return res.status(200);
+//   }
+// );
 
-app.get("/*", function (req, res) {
-  res.sendFile(
-    path.join(__dirname, "./client/public/index.html"),
-    function (err) {
-      if (err) {
-        res.status(500).send(err);
-      }
-    }
-  );
-});
+// app.get("/*", function (req, res) {
+//   res.sendFile(
+//     path.join(__dirname, "./client/public/index.html"),
+//     function (err) {
+//       if (err) {
+//         res.status(500).send(err);
+//       }
+//     }
+//   );
+// });
 
 module.exports = app;
