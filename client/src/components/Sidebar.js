@@ -29,6 +29,11 @@ function Sidebar() {
               <span className="ml-3">Library</span>
             </Link>
           </li>
+          <li>
+            <Link to={"/settings"} className="sidebar-link group">
+              <span className="ml-3">Settings</span>
+            </Link>
+          </li>
         </ul>
         <div className="mx-auto">
           <Switcher />

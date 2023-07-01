@@ -1,4 +1,5 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 export const UserContext = createContext();
 
@@ -12,6 +13,30 @@ export const UserProvider = ({ children }) => {
   );
   const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail"));
   const [authToken, setAuthToken] = useState(localStorage.getItem("authToken"));
+  const [settings, setSettings] = useState(null);
+
+  useEffect(() => {
+    const getSettings = async () => {
+      try {
+        const result = await axios({
+          method: "get",
+          url: `/settings/${userId}`,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Credentials": "true",
+            Authorization: authToken,
+          },
+        });
+
+        if (result.status !== 200) return;
+
+        setSettings(result.data.settings);
+      } catch (error) {
+        // TODO: handle error...
+      }
+    };
+    getSettings();
+  }, []);
 
   const updateUser = (user, token) => {
     localStorage.setItem("userId", user.uid);
@@ -53,6 +78,8 @@ export const UserProvider = ({ children }) => {
         updateUser,
         removeUser,
         authToken,
+        settings,
+        setSettings,
       }}
     >
       {children}

@@ -10,6 +10,7 @@ import { Auth } from "./Auth";
 // import { useContext } from "react";
 import { UserProvider } from "./UserContext";
 import Library from "./routes/Library";
+import Settings from "./routes/Settings";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "library",
         element: <Library />,
+      },
+      {
+        path: "settings",
+        element: <Settings />,
       },
       {
         path: "rails",

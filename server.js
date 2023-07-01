@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 let bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-FIREBASE_PATH = "/etc/secrets/firebase.json";
+FIREBASE_PATH = "./etc/secrets/firebase.json";
 let serviceAccount = require(FIREBASE_PATH);
 
 admin.initializeApp({
@@ -26,6 +26,7 @@ admin.initializeApp({
 
 const db = admin.firestore();
 const librariesCollection = db.collection("libraries");
+const settingsCollection = db.collection("settings");
 
 // TODO: hitting twice???
 const verifyTokenMiddleware = async (req, res, next) => {
@@ -52,8 +53,17 @@ const verifyTokenMiddleware = async (req, res, next) => {
   next();
 };
 
-app.post("/api/login", verifyTokenMiddleware, (req, res) => {
-  return res.status(200).json({ userId: req.userId });
+app.post("/api/login", verifyTokenMiddleware, async (req, res) => {
+  const userId = req.userId;
+  const settings = await getSettings(userId);
+  console.log(settings);
+  if (!settings) {
+    const response = await settingsCollection
+      .doc(userId)
+      .set({ theme: "Nord" });
+    console.log(response);
+  }
+  return res.status(200).json({ userId: userId });
 });
 
 app.get(
@@ -91,11 +101,47 @@ async function getLibrary(userId) {
   return { codeSnippets: codeSnippets };
 }
 
+async function getSettings(userId) {
+  const userSettingsDoc = settingsCollection.doc(userId);
+  const userSettingsSnapshot = await userSettingsDoc.get();
+  const settings = userSettingsSnapshot.data();
+
+  return settings;
+}
+
 async function initialize() {}
 
 initialize();
 
 app.get("/");
+
+app.get("/settings/:user_id", verifyTokenMiddleware, async (req, res) => {
+  const userId = req.params.user_id;
+  const settings = await getSettings(userId);
+
+  return res.status(200).json({ settings: settings });
+});
+
+app.patch("/settings/:user_id", verifyTokenMiddleware, async (req, res) => {
+  const userId = req.params.user_id;
+  const userSettings = await settingsCollection.doc(userId);
+
+  let updateFields = {};
+  if (req.query.theme) {
+    updateFields["theme"] = req.query.theme;
+  }
+
+  try {
+    await userSettings.update(updateFields);
+  } catch (error) {
+    // TODO: make this a constant (No document to update)
+    if (error.code === 5) {
+      await settingsCollection.doc(userId).set(updateFields);
+    }
+  }
+
+  return res.status(200).json({ settings: updateFields });
+});
 
 app.patch(
   "/users/:user_id/code_snippets/:code_snippet_id",
@@ -103,7 +149,7 @@ app.patch(
   async (req, res) => {
     const userId = req.params.user_id;
     const codeSnippetId = req.params.code_snippet_id;
-    const codeSnippetsCollection = await librariesCollection
+    const codeSnippet = await librariesCollection
       .doc(userId)
       .collection("code_snippets")
       .doc(codeSnippetId);
@@ -119,9 +165,7 @@ app.patch(
       updateFields["title"] = req.query.title;
     }
 
-    console.log(updateFields);
-
-    await codeSnippetsCollection.update(updateFields);
+    await codeSnippet.update(updateFields);
 
     return res.status(200).json({ code_snippet: updateFields });
   }
