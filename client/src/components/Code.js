@@ -5,7 +5,7 @@ import * as Constants from "../constants/code.js";
 import axios from "../config/axios";
 import { UserContext } from "../UserContext.js";
 import SearchDropdown from "./form/SearchDropdown.js";
-import { Trash } from "heroicons-react";
+import { TrashOutline, DocumentDuplicateOutline, Check } from "heroicons-react";
 import * as Monaco from "../constants/monacoThemes.js";
 
 import Active4D from "monaco-themes/themes/Active4D.json";
@@ -138,10 +138,33 @@ function Code({
   const [languageOptions, setLanguageOptions] = useState(allLanguageOptions);
   const [inError, setInError] = useState(false);
   const [title, setTitle] = useState(codeSnippet.title);
+  const [copied, setIsCopied] = useState(false);
 
   useEffect(() => {
     setEditorTheme();
   });
+
+  const handleCopy = (event) => {
+    event.preventDefault();
+    copyTextToClipboard(code)
+      .then(() => {
+        setIsCopied(true);
+        setTimeout(() => {
+          setIsCopied(false);
+        }, 1000);
+      })
+      .catch((error) => {
+        // TODO: handle error here...
+      });
+  };
+
+  async function copyTextToClipboard(text) {
+    if ("clipboard" in navigator) {
+      return await navigator.clipboard.writeText(text);
+    } else {
+      return document.execCommand("copy", true, text);
+    }
+  }
 
   const setEditorTheme = () => {
     loader.init().then((monaco) => {
@@ -302,9 +325,9 @@ function Code({
         <button
           type="button"
           onClick={handleDestroy}
-          className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-1 py-1 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+          className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-1 py-1 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
         >
-          <Trash width={14} height={14} />
+          <TrashOutline width={16} height={16} />
         </button>
       </div>
       {/* <SearchDropdown
@@ -319,14 +342,27 @@ function Code({
       {/* TODO: colorTheme reload this element when changed... */}
       {/* TODO: have user be able to choose code theme. */}
 
-      <Editor
-        height="7rem"
-        language={language}
-        defaultValue={code}
-        onChange={handleCodeChange}
-        // theme={colorTheme === "dark" ? "light" : "vs-dark"}
-        onMount={handleOnMount}
-      />
+      <div className="relative group">
+        <Editor
+          height="7rem"
+          language={language}
+          defaultValue={code}
+          onChange={handleCodeChange}
+          onMount={handleOnMount}
+          // className="relative"
+        />
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="text-gray-900 group-hover:block hidden absolute bottom-2 right-28 ml-auto hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-1 py-1 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+        >
+          {copied ? (
+            <Check width={20} height={20} />
+          ) : (
+            <DocumentDuplicateOutline width={20} height={20} />
+          )}
+        </button>
+      </div>
       {inError === true && (
         <div className="flex items-center space-x-2 mt-1">
           <span className="sr-only">Red circle</span>
