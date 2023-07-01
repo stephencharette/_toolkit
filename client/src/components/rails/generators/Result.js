@@ -27,7 +27,7 @@ function Result({ command }) {
   };
 
   return (
-    <form className="fixed inset-x-0 bottom-0 px-4 drop-shadow-xl sm:ml-52 max-w-2xl">
+    <form className="fixed inset-x-0 bottom-0 px-4 drop-shadow-xl sm:ml-52 pr-30 xl:mx-auto max-w-4xl">
       <div className="w-full border border-gray-200 rounded-b-none rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
         <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
           <label htmlFor="command" className="sr-only">
