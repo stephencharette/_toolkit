@@ -115,6 +115,11 @@ app.patch(
     if (req.query.code) {
       updateFields["code"] = req.query.code;
     }
+    if (req.query.title) {
+      updateFields["title"] = req.query.title;
+    }
+
+    console.log(updateFields);
 
     await codeSnippetsCollection.update(updateFields);
 

@@ -22,12 +22,34 @@ function Code({
   // const [dropdownIsHidden, setDropdownIsHidden] = useState(true);
   const [languageOptions, setLanguageOptions] = useState(allLanguageOptions);
   const [inError, setInError] = useState(false);
+  const [title, setTitle] = useState(codeSnippet.title);
+
+  const handleTitleChange = async (event) => {
+    const value = event.target.value;
+    if (value === title || !value) return;
+    setTitle(value);
+    try {
+      const result = await axios({
+        method: "patch",
+        url: `/users/${userId}/code_snippets/${codeSnippetId}?title=${encodeURIComponent(
+          value
+        )}`,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: authToken,
+        },
+      });
+      // TODO: add rescue block here...
+    } catch (error) {
+      setInError(true);
+    }
+  };
   // TODO: make constant or something...
 
   const handleLanguageChange = async (event) => {
     const value = event.target.value;
     const label = event.target.name;
-    if (value === language) return;
+    if (value === language || !value) return;
     setLanguage(value);
     // setDropdownIsHidden(true);
     try {
@@ -82,7 +104,7 @@ function Code({
   const handleCodeChange = async (value, event) => {
     // const value = event.target.value;
     console.log(value);
-    if (value === code) return;
+    if (value === code || !value) return;
     setCode(value);
     if (codeSnippetId === "new") {
       try {
@@ -126,12 +148,18 @@ function Code({
     // TODO: add title here...
     <div>
       <div className="flex items-center">
+        <input
+          type="text"
+          placeholder="Nickname"
+          onChange={handleTitleChange}
+          defaultValue={title}
+        ></input>
         <select
           value={language}
           onChange={handleLanguageChange}
           className="font-mono w-40"
         >
-          <option value="">Select a language</option>
+          <option value="">Select language</option>
           {languageOptions.map((option, index) => (
             <option key={index} value={option.value}>
               {option.label}
