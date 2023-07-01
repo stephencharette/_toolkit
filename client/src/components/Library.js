@@ -40,7 +40,7 @@ function Library() {
 
   const handleAddCodeSnippet = () => {
     const newCodeSnippets = { ...codeSnippets };
-    newCodeSnippets.new = { lang: "", code: "" };
+    newCodeSnippets.new = { lang: "", code: "Your code here." };
     setCodeSnippets(newCodeSnippets);
   };
 
