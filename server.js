@@ -139,8 +139,6 @@ app.post(
       fields["code"] = req.query.code;
     }
 
-    let documentId = null;
-
     const result = await codeSnippetsCollection.add(fields);
 
     return res.status(200).json({ documentId: result.id });

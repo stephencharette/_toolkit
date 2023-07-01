@@ -33,7 +33,9 @@ function Code({
     try {
       const result = await axios({
         method: "patch",
-        url: `/users/${userId}/code_snippets/${codeSnippetId}?lang=${value}`,
+        url: `/users/${userId}/code_snippets/${codeSnippetId}?lang=${encodeURIComponent(
+          value
+        )}`,
         headers: {
           "Access-Control-Allow-Origin": "*",
           Authorization: authToken,
@@ -127,7 +129,7 @@ function Code({
         <select
           value={language}
           onChange={handleLanguageChange}
-          className="font-mono"
+          className="font-mono w-40"
         >
           <option value="">Select a language</option>
           {languageOptions.map((option, index) => (
@@ -155,21 +157,6 @@ function Code({
       /> */}
       {/* TODO: colorTheme reload this element when changed... */}
       {/* TODO: have user be able to choose code theme. */}
-      {/* import loader from "@monaco-editor/loader";
-      import monokai from "monaco-themes/themes/Cobalt.json";
-
-      loader.init().then((monaco) => {
-        const wrapper = document.getElementById("root");
-        wrapper.style.height = "100vh";
-        const properties = {
-          value: "function hello() {\n\talert('Hello world!');\n}",
-          language: "javascript"
-        };
-
-        monaco.editor.defineTheme("dawn", monokai);
-        monaco.editor.setTheme("dawn");
-        monaco.editor.create(wrapper, properties);
-      }); */}
 
       <Editor
         height="7rem"
