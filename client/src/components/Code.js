@@ -24,6 +24,31 @@ function Code({
   const [inError, setInError] = useState(false);
   const [title, setTitle] = useState(codeSnippet.title);
 
+  const handleOnMount = async (event) => {
+    if (codeSnippetId !== "new") return;
+
+    const value = "Your code here.";
+    try {
+      const result = await axios({
+        method: "post",
+        url: `/users/${userId}/code_snippets/?code=${encodeURIComponent(
+          value
+        )}`,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: authToken,
+        },
+      });
+
+      handleAddCodeSnippet({
+        code: value,
+        documentId: result.data.documentId,
+      });
+    } catch (error) {
+      setInError(true);
+    }
+  };
+
   const handleTitleChange = async (event) => {
     const value = event.target.value;
     if (value === title || !value) return;
@@ -102,45 +127,21 @@ function Code({
   };
 
   const handleCodeChange = async (value, event) => {
-    // const value = event.target.value;
-    console.log(value);
     if (value === code || !value) return;
     setCode(value);
-    if (codeSnippetId === "new") {
-      try {
-        const result = await axios({
-          method: "post",
-          url: `/users/${userId}/code_snippets/?code=${encodeURIComponent(
-            value
-          )}`,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            Authorization: authToken,
-          },
-        });
-
-        handleAddCodeSnippet({
-          code: value,
-          documentId: result.data.documentId,
-        });
-      } catch (error) {
-        setInError(true);
-      }
-    } else {
-      try {
-        const result = await axios({
-          method: "patch",
-          url: `/users/${userId}/code_snippets/${codeSnippetId}?code=${encodeURIComponent(
-            value
-          )}`,
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            Authorization: authToken,
-          },
-        });
-      } catch (error) {
-        setInError(true);
-      }
+    try {
+      const result = await axios({
+        method: "patch",
+        url: `/users/${userId}/code_snippets/${codeSnippetId}?code=${encodeURIComponent(
+          value
+        )}`,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          Authorization: authToken,
+        },
+      });
+    } catch (error) {
+      setInError(true);
     }
   };
 
@@ -192,6 +193,7 @@ function Code({
         defaultValue={code}
         onChange={handleCodeChange}
         theme={colorTheme === "dark" ? "light" : "vs-dark"}
+        onMount={handleOnMount}
       />
       {inError === true && (
         <div className="flex items-center space-x-2 mt-1">
