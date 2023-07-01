@@ -4,7 +4,6 @@ import Code from "./Code";
 import { UserContext } from "../UserContext";
 import axios from "../config/axios";
 import SearchDropdown from "./form/SearchDropdown";
-import MonacoEditor from "@uiw/react-monacoeditor";
 import { Auth } from "../Auth";
 
 function Library() {
@@ -112,13 +111,6 @@ function Library() {
             ))}
 
             {/* TODO: disable button until next item is saved. */}
-            <MonacoEditor
-              language="html"
-              value="<h1>I ♥ react-monacoeditor</h1>"
-              options={{
-                theme: "vs-dark",
-              }}
-            />
             <button
               type="button"
               onClick={handleAddCodeSnippet}

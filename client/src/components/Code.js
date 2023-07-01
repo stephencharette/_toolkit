@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import useDarkSide from "./hooks/useDarkSide";
-import CodeEditor from "@uiw/react-textarea-code-editor";
+import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
 import * as Constants from "../constants/code.js";
 import axios from "../config/axios";
 import { UserContext } from "../UserContext.js";
@@ -22,9 +22,6 @@ function Code({
   // const [dropdownIsHidden, setDropdownIsHidden] = useState(true);
   const [languageOptions, setLanguageOptions] = useState(allLanguageOptions);
   const [inError, setInError] = useState(false);
-  const [isSaved, setIsSaved] = useState(
-    codeSnippetId === "new" ? false : true
-  );
   // TODO: make constant or something...
 
   const handleLanguageChange = async (event) => {
@@ -80,12 +77,9 @@ function Code({
     }
   };
 
-  const handleCodeType = () => {
-    setIsSaved(false);
-  };
-
-  const handleCodeChange = async (event) => {
-    const value = event.target.value;
+  const handleCodeChange = async (value, event) => {
+    // const value = event.target.value;
+    console.log(value);
     if (value === code) return;
     setCode(value);
     if (codeSnippetId === "new") {
@@ -105,7 +99,6 @@ function Code({
           code: value,
           documentId: result.data.documentId,
         });
-        // setIsSaved(true);
       } catch (error) {
         setInError(true);
       }
@@ -125,7 +118,6 @@ function Code({
         setInError(true);
       }
     }
-    setIsSaved(true);
   };
 
   return (
@@ -162,24 +154,29 @@ function Code({
         setIsHidden={setDropdownIsHidden}
       /> */}
       {/* TODO: colorTheme reload this element when changed... */}
-      <CodeEditor
-        value={code}
+      {/* TODO: have user be able to choose code theme. */}
+      {/* import loader from "@monaco-editor/loader";
+      import monokai from "monaco-themes/themes/Cobalt.json";
+
+      loader.init().then((monaco) => {
+        const wrapper = document.getElementById("root");
+        wrapper.style.height = "100vh";
+        const properties = {
+          value: "function hello() {\n\talert('Hello world!');\n}",
+          language: "javascript"
+        };
+
+        monaco.editor.defineTheme("dawn", monokai);
+        monaco.editor.setTheme("dawn");
+        monaco.editor.create(wrapper, properties);
+      }); */}
+
+      <Editor
+        height="7rem"
         language={language}
-        placeholder=""
-        onBlur={handleCodeChange}
-        onChange={handleCodeType}
-        padding={15}
-        data-color-mode={colorTheme === "dark" ? "light" : "dark"}
-        style={{
-          fontSize: 14,
-          // backgroundColor: "#1e293b",
-          borderRadius: "10px",
-          borderStyle: "solid",
-          border: "1px",
-          borderColor: "#4b5563",
-          fontFamily:
-            "ui-monospace,SFMono-Regular,SF Mono,Consolas,Liberation Mono,Menlo,monospace",
-        }}
+        defaultValue={code}
+        onChange={handleCodeChange}
+        theme={colorTheme === "dark" ? "light" : "vs-dark"}
       />
       {inError === true && (
         <div className="flex items-center space-x-2 mt-1">
@@ -187,15 +184,6 @@ function Code({
           <span className="flex w-2.5 h-2.5 bg-red-500 rounded-full"></span>
           <p className="dark:text-gray-200 font-semibold text-sm text-gray-800">
             Could not save...
-          </p>
-        </div>
-      )}
-      {isSaved === false && (
-        <div className="flex items-center space-x-2 mt-1">
-          <span className="sr-only">Orange circle</span>
-          <span className="flex w-2.5 h-2.5 bg-orange-300 rounded-full"></span>
-          <p className="dark:text-gray-200 font-semibold text-sm text-gray-800">
-            Not saved.
           </p>
         </div>
       )}
