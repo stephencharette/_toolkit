@@ -17,7 +17,7 @@ app.use(express.static(path.join(__dirname, "client/build")));
 let bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
-FIREBASE_PATH = "./etc/secrets/firebase.json";
+FIREBASE_PATH = "/etc/secrets/firebase.json";
 let serviceAccount = require(FIREBASE_PATH);
 
 admin.initializeApp({
