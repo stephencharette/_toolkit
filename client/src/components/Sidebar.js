@@ -12,7 +12,7 @@ function Sidebar() {
       <div className="sidebar-container flex flex-col justify-between">
         <ul className="space-y-2">
           <li className="mb-6">
-            <h1 className="font-mono select-none text-3xl font-bold">
+            <h1 className="font-mono select-none text-center text-3xl font-bold">
               _toolkit
             </h1>
           </li>
@@ -30,7 +30,7 @@ function Sidebar() {
             </Link>
           </li>
         </ul>
-        <div className="">
+        <div className="mx-auto">
           <Switcher />
         </div>
       </div>

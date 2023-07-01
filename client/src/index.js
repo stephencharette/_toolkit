@@ -9,7 +9,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Auth } from "./Auth";
 // import { useContext } from "react";
 import { UserProvider } from "./UserContext";
-import Library from "./components/Library";
+import Library from "./routes/Library";
 
 const router = createBrowserRouter([
   {

@@ -1,9 +1,8 @@
 import React from "react";
 import OpenSidebarButton from "../components/OpenSidebarButton";
-import "../App.css";
 import { Link, Outlet } from "react-router-dom";
 import { CommandLineIcon } from "@heroicons/react/24/outline";
-import Generators from "../components/rails/generators/Generators";
+
 import {
   ArrowTopRightOnSquareIcon,
   ChevronUpDownIcon,
