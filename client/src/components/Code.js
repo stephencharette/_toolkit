@@ -1,12 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import useDarkSide from "./hooks/useDarkSide";
-import Editor, { DiffEditor, useMonaco, loader } from "@monaco-editor/react";
+import Editor, { loader } from "@monaco-editor/react";
 import * as Constants from "../constants/code.js";
 import axios from "../config/axios";
 import { UserContext } from "../UserContext.js";
-import SearchDropdown from "./form/SearchDropdown.js";
+// import SearchDropdown from "./form/SearchDropdown.js";
 import { TrashOutline, DocumentDuplicateOutline, Check } from "heroicons-react";
-import * as Monaco from "../constants/monacoThemes.js";
 
 import Active4D from "monaco-themes/themes/Active4D.json";
 import AllHallowsEve from "monaco-themes/themes/All Hallows Eve.json";
@@ -354,7 +353,7 @@ function Code({
         <button
           type="button"
           onClick={handleCopy}
-          className="text-gray-900 group-hover:block hidden absolute bottom-2 right-28 ml-auto hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-1 py-1 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+          className="text-gray-900 group-hover:block hidden absolute bottom-2 right-20 md:right-24 lg:right-28 ml-auto hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-1 py-1 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
         >
           {copied ? (
             <Check width={20} height={20} />
