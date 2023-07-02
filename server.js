@@ -53,6 +53,12 @@ const verifyTokenMiddleware = async (req, res, next) => {
   next();
 };
 
+app.use(express.static(path.join(__dirname, "client", "public")));
+
+app.use((req, res, next) => {
+  res.redirect("/");
+});
+
 app.post("/api/login", verifyTokenMiddleware, async (req, res) => {
   const userId = req.userId;
   const settings = await getSettings(userId);
@@ -212,7 +218,7 @@ app.delete(
 
 app.get("/*", function (req, res) {
   res.sendFile(
-    path.join(__dirname, "./client/public/index.html"),
+    path.join(__dirname, "client", "public", "index.html"),
     function (err) {
       if (err) {
         res.status(500).send(err);
