@@ -53,12 +53,6 @@ const verifyTokenMiddleware = async (req, res, next) => {
   next();
 };
 
-app.use(express.static(path.join(__dirname, "client", "public")));
-
-app.use((req, res, next) => {
-  res.redirect("/");
-});
-
 app.post("/api/login", verifyTokenMiddleware, async (req, res) => {
   const userId = req.userId;
   const settings = await getSettings(userId);
