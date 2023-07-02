@@ -305,6 +305,7 @@ function Code({
       <div className="flex items-center">
         <input
           type="text"
+          className="small"
           placeholder="Nickname"
           onChange={handleTitleChange}
           defaultValue={title}

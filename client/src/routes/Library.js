@@ -5,11 +5,13 @@ import { UserContext } from "../UserContext";
 import axios from "../config/axios";
 import SearchDropdown from "../components/form/SearchDropdown";
 import { Auth } from "../Auth";
+import LibrarySearch from "../components/LibrarySearch";
 
 function Library() {
   const { userId, authToken } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const [codeSnippets, setCodeSnippets] = useState({});
+  const [filteredCodeSnippets, setFilteredCodeSnippets] = useState({});
   // TODO: did component mount?
   useEffect(() => {
     if (!userId) return;
@@ -28,6 +30,7 @@ function Library() {
         if (result.status !== 200 || userId != result.data.userId) return;
 
         setCodeSnippets(result.data.library.codeSnippets);
+        setFilteredCodeSnippets(result.data.library.codeSnippets);
       } catch (error) {
         // TODO: handle error...
       } finally {
@@ -38,16 +41,39 @@ function Library() {
     getCodeSnippets();
   }, []);
 
+  const handleNicknameSearch = (event) => {
+    const search = event.target.value;
+    if (!search) {
+      setFilteredCodeSnippets(codeSnippets);
+      return;
+    }
+
+    const newFilteredCodeSnippets = {};
+
+    Object.keys(codeSnippets).forEach((key) => {
+      const snippet = codeSnippets[key];
+
+      if (!snippet.title) return;
+      if (snippet.title.toLowerCase().includes(search.toLowerCase())) {
+        newFilteredCodeSnippets[key] = snippet;
+      }
+    });
+
+    setFilteredCodeSnippets(newFilteredCodeSnippets);
+  };
+
   const handleAddCodeSnippet = () => {
     const newCodeSnippets = { ...codeSnippets };
     newCodeSnippets.new = { lang: "", code: "Your code here." };
     setCodeSnippets(newCodeSnippets);
+    setFilteredCodeSnippets(newCodeSnippets);
   };
 
   const handleDestroyCodeSnippet = (documentId) => {
     let newCodeSnippets = { ...codeSnippets };
     delete newCodeSnippets[documentId];
     setCodeSnippets(newCodeSnippets);
+    setFilteredCodeSnippets(newCodeSnippets);
   };
 
   const handleAddCodeSnippetDocument = ({ code, documentId }) => {
@@ -73,6 +99,7 @@ function Library() {
           <h1 className="font-semibold text-3xl text-left">Your Library</h1>
           <OpenSidebarButton />
         </div>
+        <LibrarySearch handleSearch={handleNicknameSearch} />
         {isLoading ? (
           <div
             role="status"
@@ -100,7 +127,7 @@ function Library() {
         ) : (
           <div className="space-y-3 w-full flex flex-col">
             <SearchDropdown />
-            {Object.entries(codeSnippets).map(([id, codeSnippet]) => (
+            {Object.entries(filteredCodeSnippets).map(([id, codeSnippet]) => (
               <Code
                 handleAddCodeSnippet={handleAddCodeSnippetDocument}
                 handleDestroyCodeSnippet={handleDestroyCodeSnippet}
