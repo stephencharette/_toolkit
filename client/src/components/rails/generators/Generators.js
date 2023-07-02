@@ -117,7 +117,7 @@ function Generators() {
   };
 
   return (
-    <div className="rails">
+    <div>
       <div className="flex flex-col space-y-5 mb-72">
         <GeneratorTypeSelector
           generator={generator}

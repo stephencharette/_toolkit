@@ -21,7 +21,6 @@ function Settings() {
       });
 
       setSettings(result.data.settings);
-      console.log(settings);
     } catch (error) {
       console.error(error);
     }

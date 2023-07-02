@@ -56,12 +56,10 @@ const verifyTokenMiddleware = async (req, res, next) => {
 app.post("/api/login", verifyTokenMiddleware, async (req, res) => {
   const userId = req.userId;
   const settings = await getSettings(userId);
-  console.log(settings);
   if (!settings) {
     const response = await settingsCollection
       .doc(userId)
       .set({ theme: "Nord" });
-    console.log(response);
   }
   return res.status(200).json({ userId: userId });
 });

@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import Rails from "./routes/Rails";
 import RailsGenerators from "./components/rails/generators/Generators";
+import RailsFormHelpers from "./components/rails/form_helpers/FormHelpers";
 import reportWebVitals from "./reportWebVitals";
 import Root from "./routes/root";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
           {
             path: "generators",
             element: <RailsGenerators />,
+          },
+          {
+            path: "form_helpers",
+            element: <RailsFormHelpers />,
           },
         ],
       },

@@ -48,7 +48,7 @@ function Rails() {
           </Link>
         </li>
         <li className="relative">
-          <Link to={"/rails/form_helpers"} target="_blank">
+          <Link to={"/rails/form_helpers"}>
             <label htmlFor="form-helpers-select" className="pretty-label">
               <div className="block">
                 <div className="text-left w-full text-lg font-semibold">
@@ -59,9 +59,6 @@ function Rails() {
               <ChevronUpDownIcon className="h-7 w-7" />
             </label>
           </Link>
-          <span className="bg-blue-100 absolute -top-1 -right-5 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-            COMING SOON
-          </span>
         </li>
         <li className="relative">
           <Link to={"/rails/internationalization"} target="_blank">
