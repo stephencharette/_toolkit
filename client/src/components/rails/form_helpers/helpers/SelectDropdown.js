@@ -20,6 +20,7 @@ function SelectDropdown() {
   const [dropdownOptionsName, setDropdownOptionsName] = useState(
     `[["Learn Ruby on Rails", "13"], ["Rubocop Rails", "25"]]`
   );
+  const [selectedDropdownOption, setSelectedDropdownOption] = useState(null);
   // multiple, size,
 
   // disabled
@@ -34,15 +35,12 @@ function SelectDropdown() {
     dataOptions,
     formVariableName,
     bindToObject,
+    selectedDropdownOption,
   ]);
 
   const handleObjectNameChange = (event) => {
     const value = event.target.value;
-    if (!value) {
-      setObjectName(":post_id");
-    } else {
-      setObjectName(value);
-    }
+    setObjectName(value || ":post_id");
   };
 
   const handleDropdownOptionsChange = (event) => {
@@ -52,9 +50,15 @@ function SelectDropdown() {
     );
   };
 
+  const generateDropdownOptionsString = () => {
+    return `, options_for_select(${dropdownOptionsName}${
+      selectedDropdownOption ? `, ${selectedDropdownOption}` : ""
+    })`;
+  };
+
   const generateCodeForOptions = () => {
     let options = [
-      `, options_for_select(${dropdownOptionsName})`,
+      generateDropdownOptionsString(),
       generateHtmlOptionsString(),
       generateDataOptionsString(),
     ];
@@ -127,6 +131,15 @@ function SelectDropdown() {
           placeholder={`[["Learn Ruby on Rails", "13"], ["Rubocop Rails", "25"]]`}
           handleChange={handleDropdownOptionsChange}
         />
+        <TextFieldWithLabel
+          name="selected"
+          label="Selected Option"
+          placeholder={`The option that is selected on default.`}
+          handleChange={(event) =>
+            setSelectedDropdownOption(event.target.value || null)
+          }
+        />
+        {/* setSelectedDropdownOption */}
       </div>
       {/* TODO: add tooltips to some funky options... */}
       <HtmlOptions
