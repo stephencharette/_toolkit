@@ -2,7 +2,7 @@ import React, { useContext, useMemo, useEffect, useState } from "react";
 import * as Monaco from "../constants/monacoThemes.js";
 import OpenSidebarButton from "../components/OpenSidebarButton";
 import axios from "axios";
-import { UserContext } from "../UserContext.js";
+import { UserContext } from "../contexts/UserContext.js";
 
 function Settings() {
   const { userId, authToken, settings, setSettings } = useContext(UserContext);

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { auth, googleProvider } from "./config/auth";
 import { signInWithPopup, signOut } from "firebase/auth";
-import { UserContext } from "./UserContext";
+import { UserContext } from "./contexts/UserContext";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/outline";
 import axios from "./config/axios";
 

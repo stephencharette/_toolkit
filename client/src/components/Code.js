@@ -1,126 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import useDarkSide from "./hooks/useDarkSide";
-import Editor, { loader } from "@monaco-editor/react";
+import Editor from "@monaco-editor/react";
 import * as Constants from "../constants/code.js";
 import axios from "../config/axios";
-import { UserContext } from "../UserContext.js";
+import { UserContext } from "../contexts/UserContext.js";
 import { CopyToClipboardContext } from "../contexts/CopyToClipboardProvider";
-// import SearchDropdown from "./form/SearchDropdown.js";
 import { TrashOutline, DocumentDuplicateOutline, Check } from "heroicons-react";
-
-import Active4D from "monaco-themes/themes/Active4D.json";
-import AllHallowsEve from "monaco-themes/themes/All Hallows Eve.json";
-import Amy from "monaco-themes/themes/Amy.json";
-import BirdsOfParadise from "monaco-themes/themes/Birds of Paradise.json";
-import Blackboard from "monaco-themes/themes/Blackboard.json";
-import BrillianceBlack from "monaco-themes/themes/Brilliance Black.json";
-import BrillianceDull from "monaco-themes/themes/Brilliance Dull.json";
-import ChromeDevTools from "monaco-themes/themes/Chrome DevTools.json";
-import CloudsMidnight from "monaco-themes/themes/Clouds Midnight.json";
-import Clouds from "monaco-themes/themes/Clouds.json";
-import Cobalt from "monaco-themes/themes/Cobalt.json";
-import Cobalt2 from "monaco-themes/themes/Cobalt2.json";
-import Dawn from "monaco-themes/themes/Dawn.json";
-import DominionDay from "monaco-themes/themes/Dominion Day.json";
-import Dracula from "monaco-themes/themes/Dracula.json";
-import Dreamweaver from "monaco-themes/themes/Dreamweaver.json";
-import Eiffel from "monaco-themes/themes/Eiffel.json";
-import EspressoLibre from "monaco-themes/themes/Espresso Libre.json";
-import GitHubDark from "monaco-themes/themes/GitHub Dark.json";
-import GitHubLight from "monaco-themes/themes/GitHub Light.json";
-import GitHub from "monaco-themes/themes/GitHub.json";
-import IDLE from "monaco-themes/themes/IDLE.json";
-import idleFingers from "monaco-themes/themes/idleFingers.json";
-import iPlastic from "monaco-themes/themes/iPlastic.json";
-import Katzenmilch from "monaco-themes/themes/Katzenmilch.json";
-import krTheme from "monaco-themes/themes/krTheme.json";
-import KuroirTheme from "monaco-themes/themes/Kuroir Theme.json";
-import LAZY from "monaco-themes/themes/LAZY.json";
-import MagicWBAmiga from "monaco-themes/themes/MagicWB (Amiga).json";
-import MerbivoreSoft from "monaco-themes/themes/Merbivore Soft.json";
-import Merbivore from "monaco-themes/themes/Merbivore.json";
-import monoindustrial from "monaco-themes/themes/monoindustrial.json";
-import MonokaiBright from "monaco-themes/themes/Monokai Bright.json";
-import Monokai from "monaco-themes/themes/Monokai.json";
-import NightOwl from "monaco-themes/themes/Night Owl.json";
-import Nord from "monaco-themes/themes/Nord.json";
-import OceanicNext from "monaco-themes/themes/Oceanic Next.json";
-import PastelsOnDark from "monaco-themes/themes/Pastels on Dark.json";
-import SlushAndPoppies from "monaco-themes/themes/Slush and Poppies.json";
-import SolarizedDark from "monaco-themes/themes/Solarized-dark.json";
-import SolarizedLight from "monaco-themes/themes/Solarized-light.json";
-import SpaceCadet from "monaco-themes/themes/SpaceCadet.json";
-import Sunburst from "monaco-themes/themes/Sunburst.json";
-import TextmateMacClassic from "monaco-themes/themes/Textmate (Mac Classic).json";
-import themelist from "monaco-themes/themes/themelist.json";
-import TomorrowNightBlue from "monaco-themes/themes/Tomorrow-Night-Blue.json";
-import TomorrowNightBright from "monaco-themes/themes/Tomorrow-Night-Bright.json";
-import TomorrowNightEighties from "monaco-themes/themes/Tomorrow-Night-Eighties.json";
-import TomorrowNight from "monaco-themes/themes/Tomorrow-Night.json";
-import Tomorrow from "monaco-themes/themes/Tomorrow.json";
-import Twilight from "monaco-themes/themes/Twilight.json";
-import UpstreamSunburst from "monaco-themes/themes/Upstream Sunburst.json";
-import VibrantInk from "monaco-themes/themes/Vibrant Ink.json";
-import XcodeDefault from "monaco-themes/themes/Xcode_default.json";
-import Zenburnesque from "monaco-themes/themes/Zenburnesque.json";
-
-const themes = {
-  Active4D,
-  AllHallowsEve,
-  Amy,
-  BirdsOfParadise,
-  Blackboard,
-  BrillianceBlack,
-  BrillianceDull,
-  ChromeDevTools,
-  CloudsMidnight,
-  Clouds,
-  Cobalt,
-  Cobalt2,
-  Dawn,
-  DominionDay,
-  Dracula,
-  Dreamweaver,
-  Eiffel,
-  EspressoLibre,
-  GitHubDark,
-  GitHubLight,
-  GitHub,
-  IDLE,
-  idleFingers,
-  iPlastic,
-  Katzenmilch,
-  krTheme,
-  KuroirTheme,
-  LAZY,
-  MagicWBAmiga,
-  MerbivoreSoft,
-  Merbivore,
-  monoindustrial,
-  MonokaiBright,
-  Monokai,
-  NightOwl,
-  Nord,
-  OceanicNext,
-  PastelsOnDark,
-  SlushAndPoppies,
-  SolarizedDark,
-  SolarizedLight,
-  SpaceCadet,
-  Sunburst,
-  TextmateMacClassic,
-  themelist,
-  TomorrowNightBlue,
-  TomorrowNightBright,
-  TomorrowNightEighties,
-  TomorrowNight,
-  Tomorrow,
-  Twilight,
-  UpstreamSunburst,
-  VibrantInk,
-  XcodeDefault,
-  Zenburnesque,
-};
+import { EditorThemeContext } from "../contexts/EditorThemeProvider";
 
 function Code({
   codeSnippetId,
@@ -129,33 +15,20 @@ function Code({
   handleDestroyCodeSnippet,
 }) {
   const { handleCopy } = useContext(CopyToClipboardContext);
-  const [colorTheme, setTheme] = useDarkSide();
+  const { setEditorTheme } = useContext(EditorThemeContext);
   const allLanguageOptions = Constants.LANGUAGE_OPTIONS;
 
-  const { userId, authToken, settings } = useContext(UserContext);
+  const { userId, authToken } = useContext(UserContext);
   const [code, setCode] = useState(codeSnippet.code.replace(/\\n/g, "\n"));
   const [language, setLanguage] = useState(codeSnippet.lang);
-  // const [dropdownIsHidden, setDropdownIsHidden] = useState(true);
-  const [languageOptions, setLanguageOptions] = useState(allLanguageOptions);
+  const [languageOptions] = useState(allLanguageOptions);
   const [inError, setInError] = useState(false);
   const [title, setTitle] = useState(codeSnippet.title);
-  const [copied, setIsCopied] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     setEditorTheme();
   });
-
-  const setEditorTheme = () => {
-    loader.init().then((monaco) => {
-      const importedTheme = settings ? themes[settings.theme] : themes["Nord"];
-
-      monaco.editor.defineTheme(
-        settings ? settings.theme : "Nord",
-        importedTheme
-      );
-      monaco.editor.setTheme(settings ? settings.theme : "Nord");
-    });
-  };
 
   const handleOnMount = async (event) => {
     setEditorTheme();
@@ -181,6 +54,14 @@ function Code({
     } catch (error) {
       setInError(true);
     }
+  };
+
+  const handleEditorCopy = (event, text) => {
+    handleCopy(event, text);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
   };
 
   const handleTitleChange = async (event) => {
@@ -228,22 +109,6 @@ function Code({
     }
   };
 
-  // const handleDropdownClick = () => {
-  //   setDropdownIsHidden(!dropdownIsHidden);
-  // };
-
-  // const handleDropdownSearch = (event) => {
-  //   const search = event.target.value;
-  //   if (search) {
-  //     const filteredOptions = languageOptions.filter((item) =>
-  //       item.label.toLowerCase().includes(search.toLowerCase())
-  //     );
-  //     setLanguageOptions(filteredOptions);
-  //   } else {
-  //     setLanguageOptions(allLanguageOptions);
-  //   }
-  // };
-
   const handleDestroy = async () => {
     // TODO: better alert box!
     if (window.confirm("Are you sure you want to delete this item?")) {
@@ -288,11 +153,12 @@ function Code({
           placeholder="Nickname"
           onChange={handleTitleChange}
           defaultValue={title}
+          className="editor-nickname"
         ></input>
         <select
           value={language}
           onChange={handleLanguageChange}
-          className="font-mono w-40"
+          className="editor-lang"
         >
           <option value="">Select language</option>
           {languageOptions.map((option, index) => (
@@ -303,45 +169,27 @@ function Code({
         </select>
         <button
           type="button"
-          onClick={handleDestroy}
-          className="text-gray-900 hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-1 py-1 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+          onClick={(event) => handleEditorCopy(event, code)}
+          className="editor-btn"
         >
+          {copied ? (
+            <Check width={16} height={16} />
+          ) : (
+            <DocumentDuplicateOutline width={16} height={16} />
+          )}
+        </button>
+        <button type="button" onClick={handleDestroy} className="editor-btn">
           <TrashOutline width={16} height={16} />
         </button>
       </div>
-      {/* <SearchDropdown
-        selected={language}
-        options={}
-        handleClick={handleDropdownClick}
-        handleSearch={handleDropdownSearch}
-        handleChange={handleLanguageChange}
-        isHidden={dropdownIsHidden}
-        setIsHidden={setDropdownIsHidden}
-      /> */}
-      {/* TODO: colorTheme reload this element when changed... */}
-      {/* TODO: have user be able to choose code theme. */}
 
-      <div className="relative group">
-        <Editor
-          height="7rem"
-          language={language}
-          defaultValue={code}
-          onChange={handleCodeChange}
-          onMount={handleOnMount}
-          // className="relative"
-        />
-        <button
-          type="button"
-          onClick={(event) => handleCopy(event, code)}
-          className="text-gray-900 group-hover:block hidden absolute bottom-2 right-20 md:right-24 lg:right-28 ml-auto hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-1 py-1 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
-        >
-          {copied ? (
-            <Check width={20} height={20} />
-          ) : (
-            <DocumentDuplicateOutline width={20} height={20} />
-          )}
-        </button>
-      </div>
+      <Editor
+        height="7rem"
+        language={language}
+        defaultValue={code}
+        onChange={handleCodeChange}
+        onMount={handleOnMount}
+      />
       {inError === true && (
         <div className="flex items-center space-x-2 mt-1">
           <span className="sr-only">Red circle</span>

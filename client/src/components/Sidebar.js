@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Switcher from "./Switcher";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../contexts/UserContext";
 import { Auth } from "../Auth";
 
 function Sidebar() {

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import OpenSidebarButton from "../components/OpenSidebarButton";
 import Code from "../components/Code";
-import { UserContext } from "../UserContext";
+import { UserContext } from "../contexts/UserContext";
 import axios from "../config/axios";
 import SearchDropdown from "../components/form/SearchDropdown";
 import { Auth } from "../Auth";

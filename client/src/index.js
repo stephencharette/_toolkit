@@ -9,12 +9,13 @@ import Root from "./routes/root";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Auth } from "./Auth";
 // import { useContext } from "react";
-import { UserProvider } from "./UserContext";
+import { UserProvider } from "./contexts/UserContext";
 import Library from "./routes/Library";
 import Settings from "./routes/Settings";
 
 import { FormHelperProvider } from "./contexts/FormHelperProvider";
 import { CopyToClipboardProvider } from "./contexts/CopyToClipboardProvider";
+import { EditorThemeProvider } from "./contexts/EditorThemeProvider";
 
 const router = createBrowserRouter([
   {
@@ -23,7 +24,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "library",
-        element: <Library />,
+        element: (
+          <EditorThemeProvider>
+            <Library />
+          </EditorThemeProvider>
+        ),
       },
       {
         path: "settings",
