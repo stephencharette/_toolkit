@@ -18,7 +18,6 @@ function Form() {
     handleHtmlOptionsChange,
     handleUrlOptionsChange,
     handleObjectNameChange,
-    setDataOptions,
     setObjectName,
     setCode,
   } = useContext(FormHelperContext);
@@ -111,31 +110,6 @@ function Form() {
       }
     }
     return true;
-  };
-
-  const handleHtmlDataKeyChange = (event, index) => {
-    const newDataOptions = [...dataOptions];
-    newDataOptions[index] = {
-      key: event.target.value,
-      value: newDataOptions[index].value,
-    };
-    setDataOptions(newDataOptions);
-  };
-
-  const handleHtmlDataValueChange = (event, index) => {
-    const newDataOptions = [...dataOptions];
-    newDataOptions[index] = {
-      key: newDataOptions[index].key,
-      value: event.target.value,
-    };
-    setDataOptions(newDataOptions);
-  };
-
-  const handleAddHtmlDataPair = () => {
-    setDataOptions((previousOptions) => [
-      ...previousOptions,
-      { key: "", value: "" },
-    ]);
   };
 
   return (
