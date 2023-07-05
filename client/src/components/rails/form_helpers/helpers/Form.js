@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import TextFieldWithLabel from "../../../form/TextFieldWithLabel";
-import AddKeyValuePair from "../../../form/AddKeyValueTextPair";
 import { FormHelperContext } from "../../../../contexts/FormHelperProvider";
 import { FORM_HTML_OPTION_FILEDS, URL_OPTION_FILEDS } from "../constants";
 import HtmlOptions from "./options/HtmlOptions";

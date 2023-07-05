@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import TextFieldWithLabel from "../../../form/TextFieldWithLabel";
-import AddKeyValuePair from "../../../form/AddKeyValueTextPair";
 import { FormHelperContext } from "../../../../contexts/FormHelperProvider";
 import HtmlOptions from "./options/HtmlOptions";
 import { SELECT_DROPDOWN_HTML_OPTION_FILEDS } from "../constants";
@@ -13,14 +12,8 @@ function SelectDropdown() {
     htmlOptions,
     dataOptions,
     formVariableName,
-    setDataOptions,
-    setFormVariableName,
     setObjectName,
-    setHtmlOptions,
     setCode,
-    handleHtmlDataKeyChange,
-    handleHtmlDataValueChange,
-    handleAddHtmlDataPair,
     handleHtmlOptionsChange,
     handleFormVariableNameChange,
   } = useContext(FormHelperContext);
