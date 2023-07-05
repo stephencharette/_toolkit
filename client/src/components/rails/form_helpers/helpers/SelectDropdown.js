@@ -24,7 +24,9 @@ function SelectDropdown() {
     handleHtmlOptionsChange,
     handleFormVariableNameChange,
   } = useContext(FormHelperContext);
-  const [optionsName, setOptionsName] = useState("Post.pluck(:title, :id)");
+  const [dropdownOptionsName, setDropdownOptionsName] = useState(
+    `[["Learn Ruby on Rails", "13"], ["Rubocop Rails", "25"]]`
+  );
   // multiple, size,
 
   // disabled
@@ -35,17 +37,11 @@ function SelectDropdown() {
   }, [
     objectName,
     htmlOptions,
-    optionsName,
+    dropdownOptionsName,
     dataOptions,
     formVariableName,
     bindToObject,
   ]);
-
-  const handleOptionsNameChange = (event) => {
-    const newOptionsName = { ...optionsName };
-    newOptionsName[event.target.name] = event.target.value;
-    setOptionsName(newOptionsName);
-  };
 
   const handleObjectNameChange = (event) => {
     const value = event.target.value;
@@ -56,9 +52,16 @@ function SelectDropdown() {
     }
   };
 
+  const handleDropdownOptionsChange = (event) => {
+    const value = event.target.value;
+    setDropdownOptionsName(
+      value || `[["Learn Ruby on Rails", "13"], ["Rubocop Rails", "25"]]`
+    );
+  };
+
   const generateCodeForOptions = () => {
     let options = [
-      `, ${optionsName}`,
+      `, options_for_select(${dropdownOptionsName})`,
       generateHtmlOptionsString(),
       generateDataOptionsString(),
     ];
@@ -123,6 +126,13 @@ function SelectDropdown() {
           label="Form Variable name"
           placeholder="form"
           handleChange={handleFormVariableNameChange}
+        />
+        {/* TODO: add option to chose between options for select and collection select... */}
+        <TextFieldWithLabel
+          name="options"
+          label="Dropdown Options"
+          placeholder={`[["Learn Ruby on Rails", "13"], ["Rubocop Rails", "25"]]`}
+          handleChange={handleDropdownOptionsChange}
         />
       </div>
       <HtmlOptions
