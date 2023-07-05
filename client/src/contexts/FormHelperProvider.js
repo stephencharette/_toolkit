@@ -35,6 +35,17 @@ export const FormHelperProvider = ({ children }) => {
     setObjectName(null);
   };
 
+  const handleUrlOptionsChange = (event) => {
+    const newUrlOptions = { ...urlOptions };
+    newUrlOptions[event.target.name] = event.target.value;
+    setUrlOptions(newUrlOptions);
+  };
+
+  const handleObjectNameChange = (event) => {
+    const value = event.target.value;
+    setObjectName(value || "@object");
+  };
+
   const handleHtmlDataKeyChange = (event, index) => {
     const newDataOptions = [...dataOptions];
     newDataOptions[index] = {
@@ -105,6 +116,8 @@ export const FormHelperProvider = ({ children }) => {
         handleHtmlDataValueChange,
         handleAddHtmlDataPair,
         handleFormVariableNameChange,
+        handleUrlOptionsChange,
+        handleObjectNameChange,
       }}
     >
       {children}

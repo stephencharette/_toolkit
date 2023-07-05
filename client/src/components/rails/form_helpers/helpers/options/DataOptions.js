@@ -8,6 +8,7 @@ const componentMap = {
   TextFieldWithLabel,
   Toggle,
 };
+
 function DataOptions() {
   const {
     dataOptions,

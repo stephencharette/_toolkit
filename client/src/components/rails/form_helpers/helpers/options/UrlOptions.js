@@ -4,6 +4,7 @@ import TextFieldWithLabel from "../../../../form/TextFieldWithLabel";
 const componentMap = {
   TextFieldWithLabel,
 };
+
 function UrlOptions({ fields, handleChange }) {
   return (
     <div className="flex flex-col space-y-2">

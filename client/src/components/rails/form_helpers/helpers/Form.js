@@ -14,9 +14,10 @@ function Form() {
     dataOptions,
     formVariableName,
     objectName,
-    setHtmlOptions,
-    setUrlOptions,
-    setFormVariableName,
+    handleFormVariableNameChange,
+    handleHtmlOptionsChange,
+    handleUrlOptionsChange,
+    handleObjectNameChange,
     setDataOptions,
     setObjectName,
     setCode,
@@ -35,29 +36,6 @@ function Form() {
     formPathName,
     bindToObject,
   ]);
-
-  const handleHtmlOptionsChange = (event) => {
-    const newHtmlOptions = { ...htmlOptions };
-    newHtmlOptions[event.target.name] = event.target.value;
-    setHtmlOptions(newHtmlOptions);
-  };
-
-  const handleUrlOptionsChange = (event) => {
-    const newUrlOptions = { ...urlOptions };
-    newUrlOptions[event.target.name] = event.target.value;
-    setUrlOptions(newUrlOptions);
-  };
-
-  const handleObjectNameChange = (event) => {
-    const value = event.target.value;
-    setObjectName(value || "@object");
-  };
-
-  const handleFormVariableNameChange = (event) => {
-    const value = event.target.value;
-
-    setFormVariableName(value || "form");
-  };
 
   const handleFormPathNameChange = (event) => {
     const value = event.target.value;
