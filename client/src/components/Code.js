@@ -4,6 +4,7 @@ import Editor, { loader } from "@monaco-editor/react";
 import * as Constants from "../constants/code.js";
 import axios from "../config/axios";
 import { UserContext } from "../UserContext.js";
+import { CopyToClipboardContext } from "../contexts/CopyToClipboardProvider";
 // import SearchDropdown from "./form/SearchDropdown.js";
 import { TrashOutline, DocumentDuplicateOutline, Check } from "heroicons-react";
 
@@ -127,6 +128,7 @@ function Code({
   handleAddCodeSnippet,
   handleDestroyCodeSnippet,
 }) {
+  const { handleCopy } = useContext(CopyToClipboardContext);
   const [colorTheme, setTheme] = useDarkSide();
   const allLanguageOptions = Constants.LANGUAGE_OPTIONS;
 
@@ -142,28 +144,6 @@ function Code({
   useEffect(() => {
     setEditorTheme();
   });
-
-  const handleCopy = (event) => {
-    event.preventDefault();
-    copyTextToClipboard(code)
-      .then(() => {
-        setIsCopied(true);
-        setTimeout(() => {
-          setIsCopied(false);
-        }, 1000);
-      })
-      .catch((error) => {
-        // TODO: handle error here...
-      });
-  };
-
-  async function copyTextToClipboard(text) {
-    if ("clipboard" in navigator) {
-      return await navigator.clipboard.writeText(text);
-    } else {
-      return document.execCommand("copy", true, text);
-    }
-  }
 
   const setEditorTheme = () => {
     loader.init().then((monaco) => {
@@ -352,7 +332,7 @@ function Code({
         />
         <button
           type="button"
-          onClick={handleCopy}
+          onClick={(event) => handleCopy(event, code)}
           className="text-gray-900 group-hover:block hidden absolute bottom-2 right-20 md:right-24 lg:right-28 ml-auto hover:text-white border border-gray-800 hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-md text-sm px-1 py-1 text-center dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
         >
           {copied ? (

@@ -13,6 +13,9 @@ import { UserProvider } from "./UserContext";
 import Library from "./routes/Library";
 import Settings from "./routes/Settings";
 
+import { FormHelperProvider } from "./contexts/FormHelperProvider";
+import { CopyToClipboardProvider } from "./contexts/CopyToClipboardProvider";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -36,7 +39,11 @@ const router = createBrowserRouter([
           },
           {
             path: "form_helpers",
-            element: <RailsFormHelpers />,
+            element: (
+              <FormHelperProvider>
+                <RailsFormHelpers />
+              </FormHelperProvider>
+            ),
           },
         ],
       },
@@ -47,7 +54,9 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <UserProvider>
-      <RouterProvider router={router} />
+      <CopyToClipboardProvider>
+        <RouterProvider router={router} />
+      </CopyToClipboardProvider>
     </UserProvider>
   </React.StrictMode>
 );

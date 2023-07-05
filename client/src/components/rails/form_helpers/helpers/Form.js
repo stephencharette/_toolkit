@@ -1,24 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import TextFieldWithLabel from "../../../form/TextFieldWithLabel";
 import AddKeyValuePair from "../../../form/AddKeyValueTextPair";
+import { FormHelperContext } from "../../../../contexts/FormHelperProvider";
+import { FORM_HTML_OPTION_FILEDS, URL_OPTION_FILEDS } from "../constants";
+import HtmlOptions from "./options/HtmlOptions";
+import UrlOptions from "./options/UrlOptions";
+import DataOptions from "./options/DataOptions";
 
-function Form({ handleCodeChange }) {
-  const [fieldPairs, setFieldPairs] = useState([]);
-  const [objectName, setObjectName] = useState("@object");
-  const [htmlOptions, setHtmlOptions] = useState({
-    class: "",
-    id: "",
-  });
-  const [dataOptions, setDataOptions] = useState([]);
-  const [urlOptions, setUrlOptions] = useState({
-    method: "",
-    action: "",
-  });
-  const [formVariableName, setFormVariableName] = useState("form");
+function Form() {
+  const {
+    bindToObject,
+    htmlOptions,
+    urlOptions,
+    dataOptions,
+    formVariableName,
+    objectName,
+    setHtmlOptions,
+    setUrlOptions,
+    setFormVariableName,
+    setDataOptions,
+    setObjectName,
+    setCode,
+  } = useContext(FormHelperContext);
+  const [formPathName, setFormPathName] = useState("path");
 
   useEffect(() => {
+    if (objectName === null) setObjectName("@object");
     generateCodeForOptions();
-  }, [objectName, htmlOptions, urlOptions, dataOptions, formVariableName]);
+  }, [
+    objectName,
+    htmlOptions,
+    urlOptions,
+    dataOptions,
+    formVariableName,
+    formPathName,
+    bindToObject,
+  ]);
 
   const handleHtmlOptionsChange = (event) => {
     const newHtmlOptions = { ...htmlOptions };
@@ -34,20 +51,19 @@ function Form({ handleCodeChange }) {
 
   const handleObjectNameChange = (event) => {
     const value = event.target.value;
-    if (!value) {
-      setObjectName("@object");
-    } else {
-      setObjectName(value);
-    }
+    setObjectName(value || "@object");
   };
 
   const handleFormVariableNameChange = (event) => {
     const value = event.target.value;
-    if (!value) {
-      setFormVariableName("form");
-    } else {
-      setFormVariableName(value);
-    }
+
+    setFormVariableName(value || "form");
+  };
+
+  const handleFormPathNameChange = (event) => {
+    const value = event.target.value;
+
+    setFormPathName(value || "path");
   };
 
   const generateCodeForOptions = () => {
@@ -57,8 +73,14 @@ function Form({ handleCodeChange }) {
       generateDataOptionsString(),
     ];
     options = options.filter((item) => item !== "").join("");
-    const formCode = `form_for ${objectName}${options} do |${formVariableName}|`;
-    handleCodeChange(formCode);
+
+    let formCode = "";
+    if (bindToObject === true) {
+      formCode = `form_for ${objectName}${options} do |${formVariableName}|`;
+    } else {
+      formCode = `form_tag(${formPathName}${options})`;
+    }
+    setCode(formCode);
   };
 
   const generateDataOptionsString = () => {
@@ -85,7 +107,9 @@ function Form({ handleCodeChange }) {
       }
     }
 
-    return `, html: { ${components.join(", ")} }`;
+    if (bindToObject) return `, html: { ${components.join(", ")} }`;
+
+    return `, ${components.join(", ")}`;
   };
 
   const generateUrlOptionsString = () => {
@@ -98,7 +122,9 @@ function Form({ handleCodeChange }) {
       }
     }
 
-    return `, url: { ${components.join(", ")} }`;
+    if (bindToObject) return `, url: { ${components.join(", ")} }`;
+
+    return `, ${components.join(", ")}`;
   };
 
   const areAllValuesEmpty = (obj) => {
@@ -139,55 +165,39 @@ function Form({ handleCodeChange }) {
     <div className="space-y-4">
       <div className="flex flex-col space-y-2">
         <h3>Form Helper Generator</h3>
-        <TextFieldWithLabel
-          name="object-name"
-          label="Object"
-          placeholder="@object"
-          handleChange={handleObjectNameChange}
-        />
-        <TextFieldWithLabel
-          name="form-variable-name"
-          label="Form Variable name"
-          placeholder="form"
-          handleChange={handleFormVariableNameChange}
-        />
+        {bindToObject ? (
+          <div className="space-y-2">
+            <TextFieldWithLabel
+              name="object-name"
+              label="Object"
+              placeholder="@object"
+              handleChange={handleObjectNameChange}
+            />
+            <TextFieldWithLabel
+              name="form-variable-name"
+              label="Form Variable name"
+              placeholder="form"
+              handleChange={handleFormVariableNameChange}
+            />
+          </div>
+        ) : (
+          <TextFieldWithLabel
+            name="form-path-name"
+            label="Form Path"
+            placeholder="`search_path` or `/search`"
+            handleChange={handleFormPathNameChange}
+          />
+        )}
       </div>
-      <div className="flex flex-col space-y-2">
-        <h3>HTML Options</h3>
-        <TextFieldWithLabel
-          name="id"
-          label="Id"
-          handleChange={handleHtmlOptionsChange}
-        />
-        <TextFieldWithLabel
-          name="class"
-          label="Classes"
-          handleChange={handleHtmlOptionsChange}
-        />
-      </div>
-      <div className="flex flex-col space-y-2">
-        <h3>URL Options</h3>
-        <TextFieldWithLabel
-          name="method"
-          label="Method"
-          placeholder="get"
-          handleChange={handleUrlOptionsChange}
-        />
-        <TextFieldWithLabel
-          name="action"
-          label="Action"
-          handleChange={handleUrlOptionsChange}
-        />
-      </div>
-      <div className="flex flex-col space-y-2">
-        <h3>Data options</h3>
-        <AddKeyValuePair
-          pairs={dataOptions}
-          handleAddPair={handleAddHtmlDataPair}
-          handleKeyChange={handleHtmlDataKeyChange}
-          handleValueChange={handleHtmlDataValueChange}
-        />
-      </div>
+      <HtmlOptions
+        fields={FORM_HTML_OPTION_FILEDS}
+        handleChange={handleHtmlOptionsChange}
+      />
+      <UrlOptions
+        fields={URL_OPTION_FILEDS}
+        handleChange={handleUrlOptionsChange}
+      />
+      <DataOptions />
     </div>
   );
 }

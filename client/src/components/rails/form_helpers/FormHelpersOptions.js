@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
 import Form from "./helpers/Form";
+import SelectDropdown from "./helpers/SelectDropdown";
+import { FormHelperContext } from "../../../contexts/FormHelperProvider";
 
-function FormHelperOptions({ formHelper, handleCodeChange }) {
+function FormHelperOptions() {
+  const { formHelper } = useContext(FormHelperContext);
+
   switch (formHelper) {
     case "form":
-      return <Form handleCodeChange={handleCodeChange} />;
-    // case "select_dropdown":
+      return <Form />;
+    case "select_dropdown":
+      return <SelectDropdown />;
     //   return (
     //   );
     // case "text_field":
@@ -16,7 +21,6 @@ function FormHelperOptions({ formHelper, handleCodeChange }) {
     // case "fields_for":
     // case "collections":
     // case "i18n":
-
     default:
     // TODO: add instructions here.
   }

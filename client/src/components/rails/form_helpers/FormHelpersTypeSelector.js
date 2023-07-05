@@ -1,36 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import PrettyRadio from "../../form/PrettyRadio";
+import { FormHelperContext } from "../../../contexts/FormHelperProvider";
 
-function FormHelpersTypeSelector({ handleSelect }) {
+function FormHelpersTypeSelector() {
+  const { handleFormHelperSelect } = useContext(FormHelperContext);
   return (
     <div className="flex flex-col text-left space-y-3">
       <h2>What to generate:</h2>
       <ul className="flex flex-wrap gap-x-1 gap-y-2">
         <PrettyRadio
           handleSelect={() => {
-            handleSelect("form");
+            handleFormHelperSelect("form");
           }}
           name="helper"
           value="form"
           label="Form"
         />
-        <div class="relative">
+        <div className="relative">
           <PrettyRadio
             handleSelect={() => {
-              handleSelect("select_dropdown");
+              handleFormHelperSelect("select_dropdown");
             }}
             name="helper"
             value="select_dropdown"
             label="Select Dropdown"
           />
-          <span className="bg-blue-100 absolute -top-1 -right-3 text-blue-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-            SOON
-          </span>
         </div>
         <div className="relative">
           <PrettyRadio
             handleSelect={() => {
-              handleSelect("text_field");
+              handleFormHelperSelect("text_field");
             }}
             name="helper"
             value="text_field"
@@ -43,7 +42,7 @@ function FormHelpersTypeSelector({ handleSelect }) {
         <div className="relative">
           <PrettyRadio
             handleSelect={() => {
-              handleSelect("check_box");
+              handleFormHelperSelect("check_box");
             }}
             name="helper"
             value="check_box"
@@ -56,7 +55,7 @@ function FormHelpersTypeSelector({ handleSelect }) {
         <div className="relative">
           <PrettyRadio
             handleSelect={() => {
-              handleSelect("radio");
+              handleFormHelperSelect("radio");
             }}
             name="helper"
             value="radio"
@@ -69,7 +68,7 @@ function FormHelpersTypeSelector({ handleSelect }) {
         <div className="relative">
           <PrettyRadio
             handleSelect={() => {
-              handleSelect("label");
+              handleFormHelperSelect("label");
             }}
             name="helper"
             value="label"
@@ -82,7 +81,7 @@ function FormHelpersTypeSelector({ handleSelect }) {
         <div className="relative">
           <PrettyRadio
             handleSelect={() => {
-              handleSelect("hidden_field");
+              handleFormHelperSelect("hidden_field");
             }}
             name="helper"
             value="hidden_field"
@@ -95,7 +94,7 @@ function FormHelpersTypeSelector({ handleSelect }) {
         <div className="relative">
           <PrettyRadio
             handleSelect={() => {
-              handleSelect("fields_for");
+              handleFormHelperSelect("fields_for");
             }}
             name="helper"
             value="fields_for"
@@ -108,7 +107,7 @@ function FormHelpersTypeSelector({ handleSelect }) {
         <div className="relative">
           <PrettyRadio
             handleSelect={() => {
-              handleSelect("collections");
+              handleFormHelperSelect("collections");
             }}
             name="helper"
             value="collections"
@@ -121,7 +120,7 @@ function FormHelpersTypeSelector({ handleSelect }) {
         <div className="relative">
           <PrettyRadio
             handleSelect={() => {
-              handleSelect("i18n");
+              handleFormHelperSelect("i18n");
             }}
             name="helper"
             value="i18n"

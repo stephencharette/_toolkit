@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import GeneratorTypeSelector from "./GeneratorTypeSelector";
-import Result from "./Result";
+import Result from "../../Result";
 import GeneratorOptions from "./GeneratorOptions";
 import * as Constants from "../../../constants/rails/index.js";
 
@@ -139,6 +139,8 @@ function Generators() {
       </div>
 
       <Result
+        buttonLabel="Copy command"
+        srLabel="Your generated command"
         command={[
           "rails generate",
           `${generator}`,
