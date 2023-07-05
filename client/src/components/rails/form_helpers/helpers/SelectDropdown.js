@@ -128,6 +128,7 @@ function SelectDropdown() {
           handleChange={handleDropdownOptionsChange}
         />
       </div>
+      {/* TODO: add tooltips to some funky options... */}
       <HtmlOptions
         fields={SELECT_DROPDOWN_HTML_OPTION_FILEDS}
         handleChange={handleHtmlOptionsChange}
