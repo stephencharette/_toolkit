@@ -24,6 +24,7 @@ export const SELECT_DROPDOWN_HTML_OPTION_FILEDS = [
   { name: "prompt", label: "Prompt", type: "TextFieldWithLabel" },
   { name: "multiple", label: "Multiple", type: "Toggle" },
   { name: "disabled", label: "Disabled", type: "Toggle" },
+  // TODO: add tooltips...
   // :include_blank - If set to true, an empty option will be created. If set to a string, the string will be used as the option’s content and the value will be empty.
   // :prompt - Create a prompt option with blank value and the text asking user to select something.
 ];
@@ -32,4 +33,5 @@ export const URL_OPTION_FILEDS = [
   { name: "method", label: "Method", type: "TextFieldWithLabel" },
   { name: "controller", label: "Controller", type: "TextFieldWithLabel" },
   { name: "action", label: "Action", type: "TextFieldWithLabel" },
+  // TODO: Add warning about using turbo... use data: { turbo_method: '...' }
 ];

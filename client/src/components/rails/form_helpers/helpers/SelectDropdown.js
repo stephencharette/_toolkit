@@ -21,9 +21,6 @@ function SelectDropdown() {
     `[["Learn Ruby on Rails", "13"], ["Rubocop Rails", "25"]]`
   );
   const [selectedDropdownOption, setSelectedDropdownOption] = useState(null);
-  // multiple, size,
-
-  // disabled
 
   useEffect(() => {
     if (objectName === null) setObjectName(":post_id");
@@ -118,12 +115,14 @@ function SelectDropdown() {
           placeholder=":post_id"
           handleChange={handleObjectNameChange}
         />
-        <TextFieldWithLabel
-          name="form-variable-name"
-          label="Form Variable name"
-          placeholder="form"
-          handleChange={handleFormVariableNameChange}
-        />
+        {bindToObject === true && (
+          <TextFieldWithLabel
+            name="form-variable-name"
+            label="Form Variable name"
+            placeholder="form"
+            handleChange={handleFormVariableNameChange}
+          />
+        )}
         {/* TODO: add option to chose between options for select and collection select... */}
         <TextFieldWithLabel
           name="options"
