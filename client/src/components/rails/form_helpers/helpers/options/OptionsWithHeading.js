@@ -7,10 +7,10 @@ const componentMap = {
   Toggle,
 };
 
-function DropdownOptions({ fields, handleChange }) {
+function OptionsWithHeading({ header, fields, handleChange }) {
   return (
     <div className="flex flex-col space-y-2">
-      <h3>Dropdown Options</h3>
+      <h3>{header}</h3>
       {fields.map((option, index) => {
         const Component = componentMap[option.type];
 
@@ -27,4 +27,4 @@ function DropdownOptions({ fields, handleChange }) {
   );
 }
 
-export default DropdownOptions;
+export default OptionsWithHeading;

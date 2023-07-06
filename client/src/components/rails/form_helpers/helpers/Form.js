@@ -2,8 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import TextFieldWithLabel from "../../../form/TextFieldWithLabel";
 import { FormHelperContext } from "../../../../contexts/FormHelperProvider";
 import { FORM_HTML_OPTION_FILEDS, URL_OPTION_FILEDS } from "../constants";
-import HtmlOptions from "./options/HtmlOptions";
-import UrlOptions from "./options/UrlOptions";
+import OptionsWithHeading from "./options/OptionsWithHeading";
 import DataOptions from "./options/DataOptions";
 
 function Form() {
@@ -140,11 +139,13 @@ function Form() {
           />
         )}
       </div>
-      <HtmlOptions
+      <OptionsWithHeading
+        header="HTML Options"
         fields={FORM_HTML_OPTION_FILEDS}
         handleChange={handleHtmlOptionsChange}
       />
-      <UrlOptions
+      <OptionsWithHeading
+        header="Url Options"
         fields={URL_OPTION_FILEDS}
         handleChange={handleUrlOptionsChange}
       />

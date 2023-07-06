@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import TextFieldWithLabel from "../../../form/TextFieldWithLabel";
 import { FormHelperContext } from "../../../../contexts/FormHelperProvider";
-import HtmlOptions from "./options/HtmlOptions";
+import OptionsWithHeading from "./options/OptionsWithHeading";
+import DataOptions from "./options/DataOptions";
 import {
   SELECT_DROPDOWN_HTML_OPTION_FILEDS,
   SELECT_DROPDOWN_OPTION_FIELDS,
 } from "../constants";
-import DataOptions from "./options/DataOptions";
-import DropdownOptions from "./options/DropdownOptions";
 
 function SelectDropdown() {
   const {
@@ -40,8 +39,6 @@ function SelectDropdown() {
     bindToObject,
     selectedDropdownOption,
   ]);
-
-  // form.select(:first_name, options_for_select([['Blue', 'blue'], ['Red', 'red']], 'red'), { size: 'test', include_blank: 'test', prompt: 'test' }, { class: 'test', id: 'test', data: { test: 'test' }})
 
   const handleObjectNameChange = (event) => {
     const value = event.target.value;
@@ -177,11 +174,13 @@ function SelectDropdown() {
         {/* setSelectedDropdownOption */}
       </div>
       {/* TODO: add tooltips to some funky options... */}
-      <DropdownOptions
+      <OptionsWithHeading
+        header="Dropdown Options"
         fields={SELECT_DROPDOWN_OPTION_FIELDS}
         handleChange={handleDropdownOptionsChange}
       />
-      <HtmlOptions
+      <OptionsWithHeading
+        header="HTML Options"
         fields={SELECT_DROPDOWN_HTML_OPTION_FILEDS}
         handleChange={handleHtmlOptionsChange}
       />
