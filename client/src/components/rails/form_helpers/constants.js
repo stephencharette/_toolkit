@@ -20,13 +20,16 @@ export const FORM_HTML_OPTION_FILEDS = [...DEFAULT_HTML_OPTION_FILEDS];
 export const SELECT_DROPDOWN_HTML_OPTION_FILEDS = [
   ...DEFAULT_HTML_OPTION_FILEDS,
   { name: "size", label: "Size", type: "TextFieldWithLabel" },
-  { name: "include_blank", label: "Include Blank", type: "TextFieldWithLabel" },
-  { name: "prompt", label: "Prompt", type: "TextFieldWithLabel" },
   { name: "multiple", label: "Multiple", type: "Toggle" },
   { name: "disabled", label: "Disabled", type: "Toggle" },
   // TODO: add tooltips...
   // :include_blank - If set to true, an empty option will be created. If set to a string, the string will be used as the option’s content and the value will be empty.
   // :prompt - Create a prompt option with blank value and the text asking user to select something.
+];
+
+export const SELECT_DROPDOWN_OPTION_FIELDS = [
+  { name: "include_blank", label: "Include Blank", type: "TextFieldWithLabel" },
+  { name: "prompt", label: "Prompt", type: "TextFieldWithLabel" },
 ];
 
 export const URL_OPTION_FILEDS = [

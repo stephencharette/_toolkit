@@ -2,8 +2,12 @@ import React, { useState, useEffect, useContext } from "react";
 import TextFieldWithLabel from "../../../form/TextFieldWithLabel";
 import { FormHelperContext } from "../../../../contexts/FormHelperProvider";
 import HtmlOptions from "./options/HtmlOptions";
-import { SELECT_DROPDOWN_HTML_OPTION_FILEDS } from "../constants";
+import {
+  SELECT_DROPDOWN_HTML_OPTION_FILEDS,
+  SELECT_DROPDOWN_OPTION_FIELDS,
+} from "../constants";
 import DataOptions from "./options/DataOptions";
+import DropdownOptions from "./options/DropdownOptions";
 
 function SelectDropdown() {
   const {
@@ -17,9 +21,10 @@ function SelectDropdown() {
     handleHtmlOptionsChange,
     handleFormVariableNameChange,
   } = useContext(FormHelperContext);
-  const [dropdownOptionsName, setDropdownOptionsName] = useState(
+  const [dropdownChoices, setDropdownChoices] = useState(
     `[["Learn Ruby on Rails", "13"], ["Rubocop Rails", "25"]]`
   );
+  const [dropdownOptions, setDropdownOptions] = useState({});
   const [selectedDropdownOption, setSelectedDropdownOption] = useState(null);
 
   useEffect(() => {
@@ -28,12 +33,15 @@ function SelectDropdown() {
   }, [
     objectName,
     htmlOptions,
-    dropdownOptionsName,
+    dropdownChoices,
+    dropdownOptions,
     dataOptions,
     formVariableName,
     bindToObject,
     selectedDropdownOption,
   ]);
+
+  // form.select(:first_name, options_for_select([['Blue', 'blue'], ['Red', 'red']], 'red'), { size: 'test', include_blank: 'test', prompt: 'test' }, { class: 'test', id: 'test', data: { test: 'test' }})
 
   const handleObjectNameChange = (event) => {
     const value = event.target.value;
@@ -41,23 +49,47 @@ function SelectDropdown() {
   };
 
   const handleDropdownOptionsChange = (event) => {
+    const { name, value } = event.target;
+    const newDropdownOptions = { ...dropdownOptions };
+    newDropdownOptions[name] = value;
+    setDropdownOptions(newDropdownOptions);
+  };
+
+  const handleDropdownChoicesChange = (event) => {
     const value = event.target.value;
-    setDropdownOptionsName(
+    setDropdownChoices(
       value || `[["Learn Ruby on Rails", "13"], ["Rubocop Rails", "25"]]`
     );
   };
 
-  const generateDropdownOptionsString = () => {
-    return `, options_for_select(${dropdownOptionsName}${
+  const generateDropdownChoicesString = () => {
+    return `, options_for_select(${dropdownChoices}${
       selectedDropdownOption ? `, ${selectedDropdownOption}` : ""
     })`;
   };
 
+  const generateDropdownOptionsString = () => {
+    let components = [];
+    for (const key in dropdownOptions) {
+      if (dropdownOptions[key] !== "") {
+        components.push(`${key}: '${dropdownOptions[key]}'`);
+      }
+    }
+
+    console.log();
+
+    if (bindToObject) {
+      return `, { ${components.join(", ")} }`;
+    }
+
+    return `, ${components.join(", ")}`;
+  };
+
   const generateCodeForOptions = () => {
     let options = [
+      generateDropdownChoicesString(),
       generateDropdownOptionsString(),
       generateHtmlOptionsString(),
-      generateDataOptionsString(),
     ];
     options = options.filter((item) => item !== "").join("");
     let formCode = "";
@@ -93,7 +125,11 @@ function SelectDropdown() {
       }
     }
 
-    return `, ${components.join(", ")}`;
+    if (bindToObject) {
+      return `, { ${components.join(", ")}${generateDataOptionsString()} }`;
+    }
+
+    return `, ${components.join(", ")} ${generateDataOptionsString()}`;
   };
 
   const areAllValuesEmpty = (obj) => {
@@ -128,7 +164,7 @@ function SelectDropdown() {
           name="options"
           label="Dropdown Options"
           placeholder={`[["Learn Ruby on Rails", "13"], ["Rubocop Rails", "25"]]`}
-          handleChange={handleDropdownOptionsChange}
+          handleChange={handleDropdownChoicesChange}
         />
         <TextFieldWithLabel
           name="selected"
@@ -141,6 +177,10 @@ function SelectDropdown() {
         {/* setSelectedDropdownOption */}
       </div>
       {/* TODO: add tooltips to some funky options... */}
+      <DropdownOptions
+        fields={SELECT_DROPDOWN_OPTION_FIELDS}
+        handleChange={handleDropdownOptionsChange}
+      />
       <HtmlOptions
         fields={SELECT_DROPDOWN_HTML_OPTION_FILEDS}
         handleChange={handleHtmlOptionsChange}
